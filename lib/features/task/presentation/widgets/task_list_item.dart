@@ -5,12 +5,14 @@ class TaskListItem extends StatelessWidget {
   const TaskListItem({
     required this.task,
     required this.onDelete,
+    required this.onEdit,
     required this.onTap,
     super.key,
   });
 
   final Task task;
   final VoidCallback onDelete;
+  final VoidCallback onEdit;
   final VoidCallback onTap;
 
   @override
@@ -24,9 +26,18 @@ class TaskListItem extends StatelessWidget {
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
-        trailing: IconButton(
-          onPressed: onDelete,
-          icon: const Icon(Icons.delete_outline),
+        trailing: Wrap(
+          spacing: 4,
+          children: <Widget>[
+            IconButton(
+              onPressed: onEdit,
+              icon: const Icon(Icons.edit_outlined),
+            ),
+            IconButton(
+              onPressed: onDelete,
+              icon: const Icon(Icons.delete_outline),
+            ),
+          ],
         ),
       ),
     );

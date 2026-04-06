@@ -27,6 +27,22 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
+  Future<List<Task>> updateTask({
+    required int id,
+    required String title,
+    required String description,
+    required String status,
+  }) async {
+    final models = await _localDataSource.updateTask(
+      id: id,
+      title: title,
+      description: description,
+      status: status,
+    );
+    return models.map(TaskMapper.toEntity).toList();
+  }
+
+  @override
   Future<List<Task>> deleteTask({required int id}) async {
     final models = await _localDataSource.deleteTask(id: id);
     return models.map(TaskMapper.toEntity).toList();

@@ -6,6 +6,12 @@ abstract class TaskLocalDataSource {
     required String title,
     required String description,
   });
+  Future<List<TaskModel>> updateTask({
+    required int id,
+    required String title,
+    required String description,
+    required String status,
+  });
   Future<List<TaskModel>> deleteTask({required int id});
 }
 
@@ -31,6 +37,29 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
       status: 'todo',
     );
     _memoryStore.insert(0, task);
+    return List<TaskModel>.unmodifiable(_memoryStore);
+  }
+
+  @override
+  Future<List<TaskModel>> updateTask({
+    required int id,
+    required String title,
+    required String description,
+    required String status,
+  }) async {
+    final int index = _memoryStore.indexWhere(
+      (TaskModel task) => task.id == id,
+    );
+    if (index == -1) {
+      return List<TaskModel>.unmodifiable(_memoryStore);
+    }
+
+    final TaskModel oldTask = _memoryStore[index];
+    _memoryStore[index] = oldTask.copyWith(
+      title: title,
+      description: description,
+      status: status,
+    );
     return List<TaskModel>.unmodifiable(_memoryStore);
   }
 

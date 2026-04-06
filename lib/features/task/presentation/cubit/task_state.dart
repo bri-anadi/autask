@@ -1,29 +1,32 @@
 import 'package:autask/features/task/domain/entities/task.dart';
 import 'package:equatable/equatable.dart';
 
-class TaskState extends Equatable {
-  const TaskState({
-    this.tasks = const <Task>[],
-    this.isLoading = false,
-    this.errorMessage,
-  });
+abstract class TaskState extends Equatable {
+  const TaskState({required this.tasks});
 
   final List<Task> tasks;
-  final bool isLoading;
-  final String? errorMessage;
-
-  TaskState copyWith({
-    List<Task>? tasks,
-    bool? isLoading,
-    String? errorMessage,
-  }) {
-    return TaskState(
-      tasks: tasks ?? this.tasks,
-      isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage,
-    );
-  }
 
   @override
-  List<Object?> get props => <Object?>[tasks, isLoading, errorMessage];
+  List<Object?> get props => <Object?>[tasks];
+}
+
+class TaskInitial extends TaskState {
+  const TaskInitial() : super(tasks: const <Task>[]);
+}
+
+class TaskLoading extends TaskState {
+  const TaskLoading({required super.tasks});
+}
+
+class TaskLoaded extends TaskState {
+  const TaskLoaded({required super.tasks});
+}
+
+class TaskError extends TaskState {
+  const TaskError({required super.tasks, required this.message});
+
+  final String message;
+
+  @override
+  List<Object?> get props => <Object?>[tasks, message];
 }

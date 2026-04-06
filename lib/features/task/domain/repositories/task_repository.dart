@@ -6,5 +6,11 @@ abstract class TaskRepository {
     required String title,
     required String description,
   });
+  Future<List<Task>> updateTask({
+    required int id,
+    required String title,
+    required String description,
+    required String status,
+  });
   Future<List<Task>> deleteTask({required int id});
 }

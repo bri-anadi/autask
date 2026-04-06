@@ -26,11 +26,11 @@
 
 ## Minggu 4 - State Management BLoC
 
-- [ ] Event utama tersedia: `LoadTasks`, `AddTask`, `UpdateTask`, `DeleteTask`.
-- [ ] State utama tersedia: `TaskInitial`, `TaskLoading`, `TaskLoaded`, `TaskError`.
-- [ ] UI terhubung ke BLoC dan reaktif.
-- [ ] Diagram event-state dibuat.
-- [ ] LP3 selesai (diagram, cuplikan BLoC, bukti UI reaktif).
+- [x] Event utama tersedia: `LoadTasks`, `AddTask`, `UpdateTask`, `DeleteTask`.
+- [x] State utama tersedia: `TaskInitial`, `TaskLoading`, `TaskLoaded`, `TaskError`.
+- [x] UI terhubung ke BLoC dan reaktif.
+- [x] Diagram event-state dibuat.
+- [x] LP3 selesai (diagram, cuplikan BLoC, bukti UI reaktif).
 
 ## Minggu 5 - Local Database sqflite
 

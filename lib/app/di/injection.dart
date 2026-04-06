@@ -4,6 +4,7 @@ import 'package:autask/features/task/domain/repositories/task_repository.dart';
 import 'package:autask/features/task/domain/usecases/add_task_usecase.dart';
 import 'package:autask/features/task/domain/usecases/delete_task_usecase.dart';
 import 'package:autask/features/task/domain/usecases/get_tasks_usecase.dart';
+import 'package:autask/features/task/domain/usecases/update_task_usecase.dart';
 import 'package:autask/features/task/presentation/cubit/task_cubit.dart';
 import 'package:get_it/get_it.dart';
 
@@ -26,11 +27,15 @@ void configureDependencies() {
     ..registerLazySingleton<DeleteTaskUseCase>(
       () => DeleteTaskUseCase(sl<TaskRepository>()),
     )
+    ..registerLazySingleton<UpdateTaskUseCase>(
+      () => UpdateTaskUseCase(sl<TaskRepository>()),
+    )
     ..registerFactory<TaskCubit>(
       () => TaskCubit(
-        sl<GetTasksUseCase>(),
-        sl<AddTaskUseCase>(),
-        sl<DeleteTaskUseCase>(),
+        getTasksUseCase: sl<GetTasksUseCase>(),
+        addTaskUseCase: sl<AddTaskUseCase>(),
+        updateTaskUseCase: sl<UpdateTaskUseCase>(),
+        deleteTaskUseCase: sl<DeleteTaskUseCase>(),
       ),
     );
 }

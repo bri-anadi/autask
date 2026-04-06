@@ -29,14 +29,14 @@ class TaskHomePage extends StatelessWidget {
             Expanded(
               child: BlocConsumer<TaskCubit, TaskState>(
                 listener: (BuildContext context, TaskState state) {
-                  if (state.errorMessage != null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.errorMessage!)),
-                    );
+                  if (state is TaskError) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(state.message)));
                   }
                 },
                 builder: (BuildContext context, TaskState state) {
-                  if (state.isLoading) {
+                  if (state is TaskLoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
@@ -56,6 +56,8 @@ class TaskHomePage extends StatelessWidget {
                         task: task,
                         onTap: () =>
                             _openTaskDetail(context: context, task: task),
+                        onEdit: () =>
+                            _showEditTaskDialog(context: context, task: task),
                         onDelete: () =>
                             context.read<TaskCubit>().deleteTask(id: task.id),
                       );
@@ -126,6 +128,95 @@ class TaskHomePage extends StatelessWidget {
               child: const Text(AppStrings.saveLabel),
             ),
           ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showEditTaskDialog({
+    required BuildContext context,
+    required Task task,
+  }) async {
+    final taskCubit = context.read<TaskCubit>();
+    final titleController = TextEditingController(text: task.title);
+    final descriptionController = TextEditingController(text: task.description);
+    String selectedStatus = task.status;
+
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (BuildContext builderContext, StateSetter setState) {
+            return AlertDialog(
+              title: const Text(AppStrings.editTaskDialogTitle),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  TextField(
+                    controller: titleController,
+                    decoration: const InputDecoration(
+                      labelText: AppStrings.titleLabel,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  TextField(
+                    controller: descriptionController,
+                    decoration: const InputDecoration(
+                      labelText: AppStrings.descriptionLabel,
+                    ),
+                    maxLines: 3,
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  DropdownButtonFormField<String>(
+                    initialValue: selectedStatus,
+                    decoration: const InputDecoration(
+                      labelText: AppStrings.statusLabel,
+                    ),
+                    items: const <DropdownMenuItem<String>>[
+                      DropdownMenuItem<String>(
+                        value: AppStrings.todoStatus,
+                        child: Text(AppStrings.todoStatus),
+                      ),
+                      DropdownMenuItem<String>(
+                        value: AppStrings.inProgressStatus,
+                        child: Text(AppStrings.inProgressStatus),
+                      ),
+                      DropdownMenuItem<String>(
+                        value: AppStrings.doneStatus,
+                        child: Text(AppStrings.doneStatus),
+                      ),
+                    ],
+                    onChanged: (String? value) {
+                      if (value == null) {
+                        return;
+                      }
+                      setState(() {
+                        selectedStatus = value;
+                      });
+                    },
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(dialogContext).pop(),
+                  child: const Text(AppStrings.cancelLabel),
+                ),
+                FilledButton(
+                  onPressed: () {
+                    taskCubit.updateTask(
+                      id: task.id,
+                      title: titleController.text,
+                      description: descriptionController.text,
+                      status: selectedStatus,
+                    );
+                    Navigator.of(dialogContext).pop();
+                  },
+                  child: const Text(AppStrings.saveLabel),
+                ),
+              ],
+            );
+          },
         );
       },
     );
