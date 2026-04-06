@@ -38,6 +38,18 @@ Project ini dikembangkan dengan Flutter untuk Android dan iOS dengan fokus MVP y
 - AI: Gemini API (BYOK)
 - Arsitektur: Clean Architecture (`presentation`, `domain`, `data`)
 
+### Referensi Library (Context7)
+
+- `flutter_bloc`: acuan pattern Cubit, pemisahan state, dan best practice integrasi UI.
+- `equatable`: acuan implementasi state/entity immutable dengan perbandingan nilai.
+- `get_it`: acuan pendaftaran dependency pada composition root.
+- `sqflite` + `path`: acuan persistence lokal dan pengelolaan path database.
+- `intl`: acuan formatting tanggal/waktu sesuai locale aplikasi.
+
+Catatan:
+- Sebelum menambah atau mengubah library, wajib cek dokumentasi melalui MCP Context7.
+- Hasil keputusan library (alasan pemilihan, batasan, dan pola pakai) dicatat pada report mingguan.
+
 Aturan implementasi:
 - UI dan dokumentasi proyek menggunakan Bahasa Indonesia.
 - Penamaan kode teknis menggunakan Bahasa Inggris.
