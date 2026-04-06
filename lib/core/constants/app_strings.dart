@@ -6,8 +6,12 @@ class AppStrings {
   static const String taskPageSubtitle = 'Tambah dan kelola tugas harian Anda';
   static const String addTaskButton = 'Tambah Tugas';
   static const String addTaskDialogTitle = 'Tugas Baru';
+  static const String taskDetailTitle = 'Detail Tugas';
   static const String titleLabel = 'Judul';
   static const String descriptionLabel = 'Deskripsi';
+  static const String statusLabel = 'Status';
+  static const String dueDateLabel = 'Deadline';
+  static const String noDueDateLabel = 'Tidak ada deadline';
   static const String saveLabel = 'Simpan';
   static const String cancelLabel = 'Batal';
   static const String emptyTaskMessage =

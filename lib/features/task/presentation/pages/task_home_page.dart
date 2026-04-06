@@ -1,8 +1,10 @@
 import 'package:autask/app/theme/app_spacing.dart';
 import 'package:autask/core/constants/app_strings.dart';
 import 'package:autask/core/widgets/app_section_card.dart';
+import 'package:autask/features/task/domain/entities/task.dart';
 import 'package:autask/features/task/presentation/cubit/task_cubit.dart';
 import 'package:autask/features/task/presentation/cubit/task_state.dart';
+import 'package:autask/features/task/presentation/pages/task_detail_page.dart';
 import 'package:autask/features/task/presentation/widgets/task_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,6 +54,8 @@ class TaskHomePage extends StatelessWidget {
                       final task = state.tasks[index];
                       return TaskListItem(
                         task: task,
+                        onTap: () =>
+                            _openTaskDetail(context: context, task: task),
                         onDelete: () =>
                             context.read<TaskCubit>().deleteTask(id: task.id),
                       );
@@ -69,6 +73,12 @@ class TaskHomePage extends StatelessWidget {
         label: const Text(AppStrings.addTaskButton),
       ),
     );
+  }
+
+  void _openTaskDetail({required BuildContext context, required Task task}) {
+    Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (_) => TaskDetailPage(task: task)));
   }
 
   Future<void> _showAddTaskDialog(BuildContext context) async {

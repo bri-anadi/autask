@@ -18,11 +18,11 @@
 
 ## Minggu 3 - UI Dasar Task dan Notes
 
-- [ ] UI list task selesai.
-- [ ] Form tambah task selesai.
-- [ ] Delete task sederhana berjalan.
-- [ ] Flow list-detail-form jelas.
-- [ ] LP2 selesai (flow CRUD UI, struktur widget, kendala/solusi).
+- [x] UI list task selesai.
+- [x] Form tambah task selesai.
+- [x] Delete task sederhana berjalan.
+- [x] Flow list-detail-form jelas.
+- [x] LP2 selesai (flow CRUD UI, struktur widget, kendala/solusi).
 
 ## Minggu 4 - State Management BLoC
 
