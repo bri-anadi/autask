@@ -20,6 +20,7 @@
 - Arsitektur aplikasi wajib menggunakan Clean Architecture (`presentation`, `domain`, `data`).
 - Paradigma yang dipakai adalah OOP dengan penerapan design pattern yang relevan.
 - Standar penulisan kode wajib mengikuti prinsip Clean Code (nama jelas, fungsi kecil, minim duplikasi, mudah diuji).
+- Gunakan named parameter pada function/method/konstruktor, terutama jika argumen lebih dari satu atau ada parameter opsional.
 - State management yang dipakai adalah `Cubit` dari `flutter_bloc`.
 
 ## Definition Of Done (Wajib)
