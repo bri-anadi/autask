@@ -1,14 +1,15 @@
 import 'package:autask/app/app.dart';
+import 'package:autask/app/di/injection.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('App shows task page title', (WidgetTester tester) async {
+    await sl.reset();
+    configureDependencies();
+
     await tester.pumpWidget(const AutaskApp());
 
     expect(find.text('Daftar Tugas'), findsOneWidget);
-    expect(
-      find.text('Setup Minggu 2 selesai, lanjut minggu 3'),
-      findsOneWidget,
-    );
+    expect(find.text('Tambah dan kelola tugas harian Anda'), findsOneWidget);
   });
 }
