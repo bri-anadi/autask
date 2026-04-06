@@ -53,7 +53,7 @@ class TaskHomePage extends StatelessWidget {
                       return TaskListItem(
                         task: task,
                         onDelete: () =>
-                            context.read<TaskCubit>().deleteTask(task.id),
+                            context.read<TaskCubit>().deleteTask(id: task.id),
                       );
                     },
                   );

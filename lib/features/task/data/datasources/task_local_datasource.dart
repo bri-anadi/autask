@@ -6,7 +6,7 @@ abstract class TaskLocalDataSource {
     required String title,
     required String description,
   });
-  Future<List<TaskModel>> deleteTask(int id);
+  Future<List<TaskModel>> deleteTask({required int id});
 }
 
 class TaskLocalDataSourceImpl implements TaskLocalDataSource {
@@ -35,7 +35,7 @@ class TaskLocalDataSourceImpl implements TaskLocalDataSource {
   }
 
   @override
-  Future<List<TaskModel>> deleteTask(int id) async {
+  Future<List<TaskModel>> deleteTask({required int id}) async {
     _memoryStore.removeWhere((TaskModel task) => task.id == id);
     return List<TaskModel>.unmodifiable(_memoryStore);
   }

@@ -58,10 +58,10 @@ class TaskCubit extends Cubit<TaskState> {
     }
   }
 
-  Future<void> deleteTask(int id) async {
+  Future<void> deleteTask({required int id}) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
     try {
-      final tasks = await _deleteTaskUseCase(id);
+      final tasks = await _deleteTaskUseCase(id: id);
       emit(state.copyWith(tasks: tasks, isLoading: false));
     } catch (_) {
       emit(
