@@ -12,6 +12,8 @@
 - Jangan lakukan operasi destruktif seperti `git reset --hard`, `git clean -fd`, atau `git push --force` tanpa izin eksplisit.
 - Jangan mengubah atau menghapus perubahan user yang tidak terkait tanpa persetujuan.
 - Jangan commit secret atau kredensial (`.env`, `key.properties`, `*.jks`, `*.keystore`, token API).
+- Gunakan MCP Context7 sebagai referensi dokumentasi library/API sebelum implementasi teknis.
+- Jika memakai Context7, cantumkan ringkasan referensi yang dipakai pada laporan mingguan (`reports/WEEK-XX-Report.md`).
 
 ## Rules Pengembangan Flutter
 - Komunikasi agent boleh menggunakan Bahasa Indonesia atau Bahasa Inggris.

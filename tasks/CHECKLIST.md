@@ -10,11 +10,11 @@
 
 ## Minggu 2 - Setup Project Flutter
 
-- [ ] Project Flutter bisa running di device/emulator.
-- [ ] Dependency inti dipasang dan dijelaskan alasannya.
-- [ ] Struktur folder awal sesuai arsitektur target.
-- [ ] Aturan branch/commit disepakati dan dipakai.
-- [ ] LP1 selesai (screenshot running, dependency, struktur folder).
+- [x] Project Flutter bisa running di device/emulator.
+- [x] Dependency inti dipasang dan dijelaskan alasannya.
+- [x] Struktur folder awal sesuai arsitektur target.
+- [x] Aturan branch/commit disepakati dan dipakai.
+- [x] LP1 selesai (screenshot running, dependency, struktur folder).
 
 ## Minggu 3 - UI Dasar Task dan Notes
 
