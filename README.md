@@ -3,6 +3,17 @@
 Autask adalah aplikasi manajemen tugas berbasis AI yang dibangun dengan Flutter.  
 Tujuan utamanya membantu pengguna mengelola pekerjaan harian dengan alur yang adaptif, terstruktur, dan mudah dievaluasi berkat analisis yang disediakan di balik layar.
 
+## Deskripsi Aplikasi
+
+Autask dirancang sebagai asisten produktivitas personal, bukan hanya daftar tugas biasa.  
+Pengguna dapat menulis tugas dengan bahasa natural, lalu sistem memprosesnya menjadi data tugas yang lebih rapi agar mudah diprioritaskan dan dijadwalkan.
+
+Fokus pengalaman pengguna pada MVP:
+
+- Input tugas cepat dengan bantuan AI (judul, konteks, prioritas awal).
+- Penyusunan prioritas tugas berdasarkan urgensi dan deadline.
+- Monitoring progres tugas harian untuk evaluasi produktivitas.
+
 ## Status Proyek
 
 Prototype awal selesai; sedang fokus membangun MVP yang hanya mencakup input tugas cerdas, susunan prioritas, dan penjadwalan dasar.
