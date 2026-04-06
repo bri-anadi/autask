@@ -1,3 +1,4 @@
+import 'package:autask/app/theme/app_spacing.dart';
 import 'package:autask/core/constants/app_strings.dart';
 import 'package:autask/core/widgets/app_section_card.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +11,7 @@ class TaskHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text(AppStrings.taskPageTitle)),
       body: const Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(AppSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
