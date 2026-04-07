@@ -23,6 +23,29 @@ Dokumen ini dipakai untuk sinkronisasi progres mingguan berdasarkan commit hash.
 
 ## Riwayat Commit
 
+## Riwayat Git Log (Sinkron)
+
+Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
+
+- `ee7281d` `docs(tasks): update log and remove lp3 file`
+- `f72168e` `feat(task): complete week 4 cubit state flow`
+- `5910ff8` `feat(task): complete week 3 ui flow`
+- `45dfb42` `docs: update pubspec description and prd refs`
+- `772bf85` `docs: update checklist and context7 rule`
+- `b33fabd` `refactor(task): use named parameter for delete flow`
+- `13fa967` `docs: add named parameter rule`
+- `1ee7dc5` `feat(task): implement basic add and delete flow`
+- `35c301b` `feat(ui): add reusable design tokens`
+- `78c919a` `feat(core): setup week 2 project foundation`
+- `1c8bf6d` `chore: update gitignore for reports`
+- `fcd1d0d` `docs(tasks): add weekly sync log`
+- `c864ffa` `docs: update readme`
+- `1f56d8f` `docs(tasks): add checklist and prd`
+- `83c3568` `docs: refresh readme`
+- `14edc52` `docs: update autask agent rules`
+- `bfb77fc` `docs: add install and git sync guide`
+- `4fe34de` `chore: initialize flutter project autask`
+
 ## Baseline Dokumen - 2026-04-06
 
 - Commit: `1f56d8f`
