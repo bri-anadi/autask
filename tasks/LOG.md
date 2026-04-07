@@ -44,3 +44,27 @@ Dokumen ini dipakai untuk sinkronisasi progres mingguan berdasarkan commit hash.
 - Perubahan utama: pondasi dokumentasi proyek selesai (README, checklist fase, PRD).
 - Kendala: belum ada.
 - Rencana minggu berikutnya: mulai implementasi teknis sesuai `tasks/CHECKLIST.md`.
+
+## Minggu 2 - 2026-04-07
+
+- Commit: `78c919a`, `35c301b`
+- Pesan: `feat(core): setup week 2 project foundation`; `feat(ui): add reusable design tokens`
+- Perubahan utama: setup fondasi project (dependency, struktur clean architecture awal, DI) dan design token reusable (`color`, `spacing`, `radius`, `typography`).
+- Kendala: tidak ada blocker kritis.
+- Rencana minggu berikutnya: lanjut implementasi UI dasar task untuk LP2.
+
+## Minggu 3 - 2026-04-07
+
+- Commit: `1ee7dc5`, `5910ff8`
+- Pesan: `feat(task): implement basic add and delete flow`; `feat(task): complete week 3 ui flow`
+- Perubahan utama: UI task dasar selesai (list, form tambah, delete) dan flow list-detail-form lengkap.
+- Kendala: tidak ada blocker kritis.
+- Rencana minggu berikutnya: lanjut state management untuk LP3.
+
+## Minggu 4 - 2026-04-07
+
+- Commit: `f72168e`
+- Pesan: `feat(task): complete week 4 cubit state flow`
+- Perubahan utama: state management Cubit dilengkapi (`TaskInitial`, `TaskLoading`, `TaskLoaded`, `TaskError`) serta operasi `Load/Add/Update/Delete`.
+- Kendala: sempat ada issue `Provider<TaskCubit>` di dialog edit, sudah diperbaiki.
+- Rencana minggu berikutnya: lanjut persistence `sqflite` untuk LP4.
