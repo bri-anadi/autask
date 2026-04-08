@@ -34,11 +34,11 @@
 
 ## Minggu 5 - Local Database sqflite
 
-- [ ] Skema tabel task final.
-- [ ] CRUD database terimplementasi.
-- [ ] Migration dasar tersedia.
-- [ ] Data persisten dan sinkron ke UI.
-- [ ] LP4 selesai (ERD/skema, query utama, bukti persistence).
+- [x] Skema tabel task final.
+- [x] CRUD database terimplementasi.
+- [x] Migration dasar tersedia.
+- [x] Data persisten dan sinkron ke UI.
+- [x] LP4 selesai (ERD/skema, query utama, bukti persistence).
 
 ## Minggu 6 - Fitur Produktivitas Task
 

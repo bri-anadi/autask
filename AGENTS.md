@@ -73,6 +73,12 @@
 - Dilarang membuat instance service/repository secara manual di layer `presentation`.
 - Seluruh dependency lintas layer wajib didaftarkan pada composition root.
 
+## Rule Local Database (Wajib)
+- Persistence lokal wajib menggunakan `sqflite` pada layer `data` (datasource/repository implementation).
+- Wajib memiliki skema tabel yang jelas dan migration dasar (`onCreate`/`onUpgrade`).
+- Operasi CRUD ke database harus diakses melalui repository contract di layer `domain`.
+- Untuk perubahan skema, wajib dokumentasikan dampak migration pada `tasks/` dan `reports/`.
+
 ## Rule Error Handling
 - Gunakan model `Failure`/error domain yang konsisten antar layer.
 - Exception dari layer `data` harus dipetakan ke failure yang dipahami `domain`.
