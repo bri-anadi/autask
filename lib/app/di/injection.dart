@@ -10,10 +10,16 @@ import 'package:get_it/get_it.dart';
 
 final GetIt sl = GetIt.instance;
 
-void configureDependencies() {
+Future<void> configureDependencies({
+  bool useInMemoryTaskDataSource = false,
+}) async {
+  await sl.reset();
+
   sl
     ..registerLazySingleton<TaskLocalDataSource>(
-      () => const TaskLocalDataSourceImpl(),
+      () => useInMemoryTaskDataSource
+          ? InMemoryTaskLocalDataSource()
+          : SqfliteTaskLocalDataSource(),
     )
     ..registerLazySingleton<TaskRepository>(
       () => TaskRepositoryImpl(sl<TaskLocalDataSource>()),

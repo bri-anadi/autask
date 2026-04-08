@@ -4,8 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   testWidgets('App shows task page title', (WidgetTester tester) async {
-    await sl.reset();
-    configureDependencies();
+    await configureDependencies(useInMemoryTaskDataSource: true);
 
     await tester.pumpWidget(const AutaskApp());
 
