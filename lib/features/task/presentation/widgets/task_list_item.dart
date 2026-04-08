@@ -1,41 +1,33 @@
+import 'package:autask/app/theme/app_colors.dart';
 import 'package:autask/app/theme/app_radius.dart';
 import 'package:autask/app/theme/app_spacing.dart';
 import 'package:autask/core/constants/app_strings.dart';
-import 'package:autask/core/utils/date_formatter.dart';
 import 'package:autask/features/task/domain/entities/task.dart';
 import 'package:flutter/material.dart';
+import 'package:heroicons/heroicons.dart';
 
 class TaskListItem extends StatelessWidget {
   const TaskListItem({
     required this.task,
-    required this.onDelete,
-    required this.onEdit,
     required this.onQuickStatus,
     required this.onTap,
     super.key,
   });
 
   final Task task;
-  final VoidCallback onDelete;
-  final VoidCallback onEdit;
   final VoidCallback onQuickStatus;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final String statusText = AppStrings.statusText(status: task.status);
-    final String priorityText = AppStrings.priorityText(
-      priority: task.priority,
-    );
-    final String dueDateText = task.dueDate == null
-        ? AppStrings.noDueDateLabel
-        : DateFormatter.dmy(task.dueDate!);
-
-    return Card(
+    return Material(
+      color: AppColors.surface,
+      borderRadius: BorderRadius.circular(AppRadius.lg),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(AppRadius.md),
-        child: Padding(
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        child: Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,42 +41,33 @@ class TaskListItem extends StatelessWidget {
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
               const SizedBox(height: AppSpacing.sm),
-              Wrap(
-                spacing: AppSpacing.sm,
-                runSpacing: AppSpacing.xs,
-                children: <Widget>[
-                  _InfoChip(
-                    label: '${AppStrings.statusLabel}: $statusText',
-                    icon: Icons.flag_outlined,
-                  ),
-                  _InfoChip(
-                    label: '${AppStrings.priorityLabel}: $priorityText',
-                    icon: Icons.keyboard_double_arrow_up,
-                  ),
-                  _InfoChip(
-                    label: '${AppStrings.dueDateLabel}: $dueDateText',
-                    icon: Icons.calendar_today_outlined,
-                  ),
-                ],
-              ),
-              const SizedBox(height: AppSpacing.sm),
               Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  IconButton(
-                    tooltip: AppStrings.editTaskLabel,
-                    onPressed: onEdit,
-                    icon: const Icon(Icons.edit_outlined),
+                  _MetaIcon(
+                    icon: HeroIcons.flag,
+                    color: _statusColor(status: task.status),
+                    tooltip: AppStrings.statusLabel,
                   ),
+                  const SizedBox(width: AppSpacing.sm),
+                  _MetaIcon(
+                    icon: HeroIcons.tag,
+                    color: _priorityColor(priority: task.priority),
+                    tooltip: AppStrings.priorityLabel,
+                  ),
+                  const SizedBox(width: AppSpacing.sm),
+                  _MetaIcon(
+                    icon: HeroIcons.calendar,
+                    color: _deadlineColor(dueDate: task.dueDate),
+                    tooltip: AppStrings.dueDateLabel,
+                  ),
+                  const Spacer(),
                   IconButton(
                     tooltip: AppStrings.quickStatusLabel,
                     onPressed: onQuickStatus,
-                    icon: const Icon(Icons.autorenew_outlined),
-                  ),
-                  IconButton(
-                    tooltip: AppStrings.deleteTaskLabel,
-                    onPressed: onDelete,
-                    icon: const Icon(Icons.delete_outline),
+                    icon: const HeroIcon(
+                      HeroIcons.arrowPath,
+                      style: HeroIconStyle.outline,
+                    ),
                   ),
                 ],
               ),
@@ -94,20 +77,75 @@ class TaskListItem extends StatelessWidget {
       ),
     );
   }
+
+  Color _statusColor({required String status}) {
+    if (status == AppStrings.doneStatus) {
+      return Colors.green.shade600;
+    }
+    if (status == AppStrings.inProgressStatus) {
+      return Colors.orange.shade700;
+    }
+    return AppColors.primaryDark;
+  }
+
+  Color _priorityColor({required String priority}) {
+    if (priority == AppStrings.highPriority) {
+      return Colors.red.shade600;
+    }
+    if (priority == AppStrings.mediumPriority) {
+      return Colors.orange.shade700;
+    }
+    return AppColors.primaryDark;
+  }
+
+  Color _deadlineColor({required DateTime? dueDate}) {
+    if (dueDate == null) {
+      return AppColors.primaryDark;
+    }
+
+    final DateTime normalizedNow = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+    final DateTime normalizedDueDate = DateTime(
+      dueDate.year,
+      dueDate.month,
+      dueDate.day,
+    );
+
+    if (normalizedDueDate.isBefore(normalizedNow)) {
+      return Colors.red.shade600;
+    }
+
+    return AppColors.primaryDark;
+  }
 }
 
-class _InfoChip extends StatelessWidget {
-  const _InfoChip({required this.label, required this.icon});
+class _MetaIcon extends StatelessWidget {
+  const _MetaIcon({
+    required this.icon,
+    required this.color,
+    required this.tooltip,
+  });
 
-  final String label;
-  final IconData icon;
+  final HeroIcons icon;
+  final Color color;
+  final String tooltip;
 
   @override
   Widget build(BuildContext context) {
-    return Chip(
-      avatar: Icon(icon, size: 16),
-      label: Text(label),
-      visualDensity: VisualDensity.compact,
+    return Tooltip(
+      message: tooltip,
+      child: Container(
+        width: 34,
+        height: 34,
+        decoration: BoxDecoration(
+          color: AppColors.primaryLight,
+          borderRadius: BorderRadius.circular(AppRadius.md),
+        ),
+        child: HeroIcon(icon, color: color, size: 18),
+      ),
     );
   }
 }

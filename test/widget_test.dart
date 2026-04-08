@@ -11,7 +11,7 @@ void main() {
 
     await tester.pumpWidget(const AutaskApp());
 
-    expect(find.text('Daftar Tugas'), findsOneWidget);
+    expect(find.text('Daftar Tugas'), findsWidgets);
     expect(find.text('Tambah dan kelola tugas harian Anda'), findsOneWidget);
   });
 }

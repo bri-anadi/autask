@@ -4,6 +4,7 @@ import 'package:autask/features/ai_settings/presentation/cubit/ai_settings_cubit
 import 'package:autask/features/ai_settings/presentation/cubit/ai_settings_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heroicons/heroicons.dart';
 
 class AiSettingsPage extends StatefulWidget {
   const AiSettingsPage({super.key});
@@ -65,10 +66,9 @@ class _AiSettingsPageState extends State<AiSettingsPage> {
                   hintText: AppStrings.aiApiKeyHint,
                   suffixIcon: IconButton(
                     onPressed: cubit.toggleKeyVisibility,
-                    icon: Icon(
-                      state.isKeyVisible
-                          ? Icons.visibility_off_outlined
-                          : Icons.visibility_outlined,
+                    icon: HeroIcon(
+                      state.isKeyVisible ? HeroIcons.eyeSlash : HeroIcons.eye,
+                      style: HeroIconStyle.outline,
                     ),
                   ),
                 ),
@@ -83,7 +83,10 @@ class _AiSettingsPageState extends State<AiSettingsPage> {
                           : () {
                               cubit.saveApiKey(apiKey: _apiKeyController.text);
                             },
-                      icon: const Icon(Icons.save_outlined),
+                      icon: const HeroIcon(
+                        HeroIcons.checkCircle,
+                        style: HeroIconStyle.outline,
+                      ),
                       label: const Text(AppStrings.aiSaveKeyButton),
                     ),
                   ),
@@ -113,7 +116,10 @@ class _AiSettingsPageState extends State<AiSettingsPage> {
                               : () {
                                   cubit.deleteApiKey();
                                 },
-                          icon: const Icon(Icons.delete_outline),
+                          icon: const HeroIcon(
+                            HeroIcons.trash,
+                            style: HeroIconStyle.outline,
+                          ),
                           label: const Text(AppStrings.aiDeleteKeyButton),
                         ),
                       ],

@@ -1,8 +1,9 @@
+import 'package:autask/app/theme/app_colors.dart';
+import 'package:autask/app/theme/app_radius.dart';
 import 'package:autask/app/theme/app_spacing.dart';
 import 'package:autask/app/di/injection.dart';
 import 'package:autask/core/constants/app_strings.dart';
 import 'package:autask/core/utils/date_formatter.dart';
-import 'package:autask/core/widgets/app_section_card.dart';
 import 'package:autask/features/ai_settings/presentation/cubit/ai_settings_cubit.dart';
 import 'package:autask/features/ai_settings/presentation/pages/ai_settings_page.dart';
 import 'package:autask/features/task/domain/entities/task.dart';
@@ -12,6 +13,7 @@ import 'package:autask/features/task/presentation/pages/task_detail_page.dart';
 import 'package:autask/features/task/presentation/widgets/task_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:heroicons/heroicons.dart';
 
 class TaskHomePage extends StatelessWidget {
   const TaskHomePage({super.key});
@@ -27,7 +29,11 @@ class TaskHomePage extends StatelessWidget {
             onPressed: () {
               _openAiSettings(context: context);
             },
-            icon: const Icon(Icons.settings_outlined),
+            icon: const HeroIcon(
+              HeroIcons.cog6Tooth,
+              color: Colors.white,
+              style: HeroIconStyle.outline,
+            ),
           ),
         ],
       ),
@@ -36,9 +42,11 @@ class TaskHomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const AppSectionCard(
-              title: AppStrings.appName,
-              subtitle: AppStrings.taskPageSubtitle,
+            BlocSelector<TaskCubit, TaskState, List<Task>>(
+              selector: (TaskState state) => state.allTasks,
+              builder: (BuildContext context, List<Task> allTasks) {
+                return _OverviewPanel(tasks: allTasks);
+              },
             ),
             const SizedBox(height: AppSpacing.md),
             BlocSelector<
@@ -101,19 +109,44 @@ class TaskHomePage extends StatelessWidget {
                         const SizedBox(height: AppSpacing.sm),
                     itemBuilder: (BuildContext context, int index) {
                       final Task task = state.tasks[index];
-                      return TaskListItem(
-                        task: task,
-                        onTap: () =>
-                            _openTaskDetail(context: context, task: task),
-                        onEdit: () =>
-                            _showEditTaskDialog(context: context, task: task),
-                        onQuickStatus: () {
-                          context.read<TaskCubit>().quickUpdateTaskStatus(
-                            task: task,
-                          );
+                      final TaskCubit taskCubit = context.read<TaskCubit>();
+                      return Dismissible(
+                        key: ValueKey<int>(task.id),
+                        direction: DismissDirection.horizontal,
+                        background: _SwipeActionBackground(
+                          alignment: Alignment.centerLeft,
+                          icon: HeroIcons.trash,
+                          color: Colors.red.shade600,
+                        ),
+                        secondaryBackground: _SwipeActionBackground(
+                          alignment: Alignment.centerRight,
+                          icon: HeroIcons.pencilSquare,
+                          color: AppColors.primary,
+                        ),
+                        confirmDismiss: (DismissDirection direction) async {
+                          if (direction == DismissDirection.endToStart) {
+                            await _showEditTaskDialog(
+                              context: context,
+                              task: task,
+                            );
+                            return false;
+                          }
+
+                          return true;
                         },
-                        onDelete: () =>
-                            context.read<TaskCubit>().deleteTask(id: task.id),
+                        onDismissed: (DismissDirection direction) {
+                          if (direction == DismissDirection.startToEnd) {
+                            taskCubit.deleteTask(id: task.id);
+                          }
+                        },
+                        child: TaskListItem(
+                          task: task,
+                          onTap: () =>
+                              _openTaskDetail(context: context, task: task),
+                          onQuickStatus: () {
+                            taskCubit.quickUpdateTaskStatus(task: task);
+                          },
+                        ),
                       );
                     },
                   );
@@ -125,7 +158,11 @@ class TaskHomePage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showAddTaskDialog(context),
-        icon: const Icon(Icons.add),
+        icon: const HeroIcon(
+          HeroIcons.plus,
+          color: Colors.white,
+          style: HeroIconStyle.outline,
+        ),
         label: const Text(AppStrings.addTaskButton),
       ),
     );
@@ -382,6 +419,7 @@ class _FilterSortSection extends StatelessWidget {
         Expanded(
           child: DropdownButtonFormField<TaskStatusFilter>(
             initialValue: selectedFilter,
+            isExpanded: true,
             decoration: const InputDecoration(
               labelText: AppStrings.filterLabel,
             ),
@@ -415,6 +453,7 @@ class _FilterSortSection extends StatelessWidget {
         Expanded(
           child: DropdownButtonFormField<TaskSortOption>(
             initialValue: selectedSortOption,
+            isExpanded: true,
             decoration: const InputDecoration(labelText: AppStrings.sortLabel),
             items: const <DropdownMenuItem<TaskSortOption>>[
               DropdownMenuItem<TaskSortOption>(
@@ -544,14 +583,157 @@ class _DueDatePickerField extends StatelessWidget {
         IconButton(
           onPressed: onSelectDate,
           tooltip: AppStrings.chooseDateLabel,
-          icon: const Icon(Icons.calendar_month_outlined),
+          icon: const HeroIcon(
+            HeroIcons.calendar,
+            style: HeroIconStyle.outline,
+          ),
         ),
         IconButton(
           onPressed: onClearDate,
           tooltip: AppStrings.clearDateLabel,
-          icon: const Icon(Icons.clear_outlined),
+          icon: const HeroIcon(HeroIcons.xMark, style: HeroIconStyle.outline),
         ),
       ],
+    );
+  }
+}
+
+class _OverviewPanel extends StatelessWidget {
+  const _OverviewPanel({required this.tasks});
+
+  final List<Task> tasks;
+
+  @override
+  Widget build(BuildContext context) {
+    final int todoCount = tasks
+        .where((Task task) => task.status == AppStrings.todoStatus)
+        .length;
+    final int inProgressCount = tasks
+        .where((Task task) => task.status == AppStrings.inProgressStatus)
+        .length;
+    final int doneCount = tasks
+        .where((Task task) => task.status == AppStrings.doneStatus)
+        .length;
+
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.primaryLight,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            AppStrings.taskPageTitle,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            AppStrings.taskPageSubtitle,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: _OverviewBadge(
+                  icon: HeroIcons.queueList,
+                  count: todoCount,
+                  label: 'To Do',
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: _OverviewBadge(
+                  icon: HeroIcons.clock,
+                  count: inProgressCount,
+                  label: 'In Progress',
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: _OverviewBadge(
+                  icon: HeroIcons.checkBadge,
+                  count: doneCount,
+                  label: 'Done',
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _OverviewBadge extends StatelessWidget {
+  const _OverviewBadge({
+    required this.icon,
+    required this.count,
+    required this.label,
+  });
+
+  final HeroIcons icon;
+  final int count;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.sm,
+        vertical: AppSpacing.sm,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
+      child: Row(
+        children: <Widget>[
+          HeroIcon(
+            icon,
+            size: 16,
+            color: AppColors.primaryDark,
+            style: HeroIconStyle.outline,
+          ),
+          const SizedBox(width: AppSpacing.xs),
+          Text('$count', style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(width: AppSpacing.xs),
+          Flexible(
+            child: Text(
+              label,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SwipeActionBackground extends StatelessWidget {
+  const _SwipeActionBackground({
+    required this.alignment,
+    required this.icon,
+    required this.color,
+  });
+
+  final Alignment alignment;
+  final HeroIcons icon;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: alignment,
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+      ),
+      child: HeroIcon(icon, color: Colors.white, style: HeroIconStyle.outline),
     );
   }
 }
