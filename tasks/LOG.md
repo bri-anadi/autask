@@ -27,6 +27,10 @@ Dokumen ini dipakai untuk sinkronisasi progres mingguan berdasarkan commit hash.
 
 Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 
+- `3f56a09` `docs(week5): update rules checklist and report`
+- `0efafa8` `feat(data): implement week 5 sqflite persistence`
+- `673e9b7` `docs(reports): track weekly reports`
+- `5dd0403` `docs(tasks): sync log with git history`
 - `ee7281d` `docs(tasks): update log and remove lp3 file`
 - `f72168e` `feat(task): complete week 4 cubit state flow`
 - `5910ff8` `feat(task): complete week 3 ui flow`
@@ -91,3 +95,11 @@ Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 - Perubahan utama: state management Cubit dilengkapi (`TaskInitial`, `TaskLoading`, `TaskLoaded`, `TaskError`) serta operasi `Load/Add/Update/Delete`.
 - Kendala: sempat ada issue `Provider<TaskCubit>` di dialog edit, sudah diperbaiki.
 - Rencana minggu berikutnya: lanjut persistence `sqflite` untuk LP4.
+
+## Minggu 5 - 2026-04-08
+
+- Commit: `0efafa8`, `3f56a09`
+- Pesan: `feat(data): implement week 5 sqflite persistence`; `docs(week5): update rules checklist and report`
+- Perubahan utama: persistence task dipindah ke `sqflite`, migration dasar ditambahkan, checklist Week 5 ditandai selesai, serta LP4/report Week 5 dibuat.
+- Kendala: tidak ada blocker kritis.
+- Rencana minggu berikutnya: lanjut fitur produktivitas task (priority, filter, sort) untuk Week 6.
