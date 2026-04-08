@@ -5,7 +5,7 @@ class TaskDatabase {
   TaskDatabase._();
 
   static const String databaseName = 'autask.db';
-  static const int databaseVersion = 1;
+  static const int databaseVersion = 2;
   static const String taskTable = 'tasks';
 
   static Database? _database;
@@ -34,6 +34,7 @@ class TaskDatabase {
         title TEXT NOT NULL,
         description TEXT NOT NULL DEFAULT '',
         status TEXT NOT NULL DEFAULT 'todo',
+        priority TEXT NOT NULL DEFAULT 'medium',
         due_date TEXT,
         created_at TEXT NOT NULL,
         updated_at TEXT NOT NULL
@@ -46,6 +47,10 @@ class TaskDatabase {
     int oldVersion,
     int newVersion,
   ) async {
-    // Reserved for future migrations.
+    if (oldVersion < 2) {
+      await db.execute(
+        "ALTER TABLE $taskTable ADD COLUMN priority TEXT NOT NULL DEFAULT 'medium'",
+      );
+    }
   }
 }

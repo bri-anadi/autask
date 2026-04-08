@@ -18,10 +18,14 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<List<Task>> addTask({
     required String title,
     required String description,
+    required String priority,
+    DateTime? dueDate,
   }) async {
     final models = await _localDataSource.addTask(
       title: title,
       description: description,
+      priority: priority,
+      dueDate: dueDate,
     );
     return models.map(TaskMapper.toEntity).toList();
   }
@@ -32,12 +36,16 @@ class TaskRepositoryImpl implements TaskRepository {
     required String title,
     required String description,
     required String status,
+    required String priority,
+    DateTime? dueDate,
   }) async {
     final models = await _localDataSource.updateTask(
       id: id,
       title: title,
       description: description,
       status: status,
+      priority: priority,
+      dueDate: dueDate,
     );
     return models.map(TaskMapper.toEntity).toList();
   }

@@ -7,12 +7,16 @@ abstract class TaskLocalDataSource {
   Future<List<TaskModel>> addTask({
     required String title,
     required String description,
+    required String priority,
+    DateTime? dueDate,
   });
   Future<List<TaskModel>> updateTask({
     required int id,
     required String title,
     required String description,
     required String status,
+    required String priority,
+    DateTime? dueDate,
   });
   Future<List<TaskModel>> deleteTask({required int id});
 }
@@ -31,6 +35,8 @@ class InMemoryTaskLocalDataSource implements TaskLocalDataSource {
   Future<List<TaskModel>> addTask({
     required String title,
     required String description,
+    required String priority,
+    DateTime? dueDate,
   }) async {
     final now = DateTime.now();
     final TaskModel task = TaskModel(
@@ -38,6 +44,8 @@ class InMemoryTaskLocalDataSource implements TaskLocalDataSource {
       title: title,
       description: description,
       status: 'todo',
+      priority: priority,
+      dueDate: dueDate,
       createdAt: now,
       updatedAt: now,
     );
@@ -51,6 +59,8 @@ class InMemoryTaskLocalDataSource implements TaskLocalDataSource {
     required String title,
     required String description,
     required String status,
+    required String priority,
+    DateTime? dueDate,
   }) async {
     final int index = _memoryStore.indexWhere(
       (TaskModel task) => task.id == id,
@@ -63,6 +73,8 @@ class InMemoryTaskLocalDataSource implements TaskLocalDataSource {
       title: title,
       description: description,
       status: status,
+      priority: priority,
+      dueDate: dueDate,
       updatedAt: DateTime.now(),
     );
     return List<TaskModel>.unmodifiable(_memoryStore);
@@ -94,6 +106,8 @@ class SqfliteTaskLocalDataSource implements TaskLocalDataSource {
   Future<List<TaskModel>> addTask({
     required String title,
     required String description,
+    required String priority,
+    DateTime? dueDate,
   }) async {
     final Database db = await TaskDatabase.instance;
     final DateTime now = DateTime.now();
@@ -101,7 +115,8 @@ class SqfliteTaskLocalDataSource implements TaskLocalDataSource {
       'title': title,
       'description': description,
       'status': 'todo',
-      'due_date': null,
+      'priority': priority,
+      'due_date': dueDate?.toIso8601String(),
       'created_at': now.toIso8601String(),
       'updated_at': now.toIso8601String(),
     });
@@ -114,6 +129,8 @@ class SqfliteTaskLocalDataSource implements TaskLocalDataSource {
     required String title,
     required String description,
     required String status,
+    required String priority,
+    DateTime? dueDate,
   }) async {
     final Database db = await TaskDatabase.instance;
     await db.update(
@@ -122,6 +139,8 @@ class SqfliteTaskLocalDataSource implements TaskLocalDataSource {
         'title': title,
         'description': description,
         'status': status,
+        'priority': priority,
+        'due_date': dueDate?.toIso8601String(),
         'updated_at': DateTime.now().toIso8601String(),
       },
       where: 'id = ?',

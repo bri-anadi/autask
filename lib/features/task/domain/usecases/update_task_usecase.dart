@@ -11,12 +11,16 @@ class UpdateTaskUseCase {
     required String title,
     required String description,
     required String status,
+    required String priority,
+    DateTime? dueDate,
   }) {
     return _repository.updateTask(
       id: id,
       title: title,
       description: description,
       status: status,
+      priority: priority,
+      dueDate: dueDate,
     );
   }
 }

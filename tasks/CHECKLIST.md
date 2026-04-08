@@ -42,11 +42,11 @@
 
 ## Minggu 6 - Fitur Produktivitas Task
 
-- [ ] Prioritas, due date, dan status lifecycle dipakai.
-- [ ] Filter status berjalan.
-- [ ] Sort prioritas/due date berjalan.
-- [ ] Quick action ubah status tersedia.
-- [ ] LP5 selesai (skenario pakai, query/filter, evaluasi performa sederhana).
+- [x] Prioritas, due date, dan status lifecycle dipakai.
+- [x] Filter status berjalan.
+- [x] Sort prioritas/due date berjalan.
+- [x] Quick action ubah status tersedia.
+- [x] LP5 selesai (skenario pakai, query/filter, evaluasi performa sederhana).
 
 ## Minggu 7 - BYOK Gemini dan Secure Storage
 

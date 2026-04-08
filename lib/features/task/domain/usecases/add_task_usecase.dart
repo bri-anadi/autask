@@ -9,7 +9,14 @@ class AddTaskUseCase {
   Future<List<Task>> call({
     required String title,
     required String description,
+    required String priority,
+    DateTime? dueDate,
   }) {
-    return _repository.addTask(title: title, description: description);
+    return _repository.addTask(
+      title: title,
+      description: description,
+      priority: priority,
+      dueDate: dueDate,
+    );
   }
 }

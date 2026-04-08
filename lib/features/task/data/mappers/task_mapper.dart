@@ -10,7 +10,10 @@ class TaskMapper {
       title: model.title,
       description: model.description,
       status: model.status,
+      priority: model.priority,
       dueDate: model.dueDate,
+      createdAt: model.createdAt,
+      updatedAt: model.updatedAt,
     );
   }
 }

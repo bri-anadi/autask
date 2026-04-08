@@ -25,7 +25,15 @@ class TaskDetailPage extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: AppSpacing.lg),
-            _InfoRow(label: AppStrings.statusLabel, value: task.status),
+            _InfoRow(
+              label: AppStrings.statusLabel,
+              value: AppStrings.statusText(status: task.status),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            _InfoRow(
+              label: AppStrings.priorityLabel,
+              value: AppStrings.priorityText(priority: task.priority),
+            ),
             const SizedBox(height: AppSpacing.sm),
             _InfoRow(
               label: AppStrings.dueDateLabel,

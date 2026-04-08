@@ -4,6 +4,7 @@ class TaskModel {
     required this.title,
     required this.description,
     required this.status,
+    required this.priority,
     this.dueDate,
     this.createdAt,
     this.updatedAt,
@@ -13,6 +14,7 @@ class TaskModel {
   final String title;
   final String description;
   final String status;
+  final String priority;
   final DateTime? dueDate;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -22,6 +24,7 @@ class TaskModel {
     String? title,
     String? description,
     String? status,
+    String? priority,
     DateTime? dueDate,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -31,6 +34,7 @@ class TaskModel {
       title: title ?? this.title,
       description: description ?? this.description,
       status: status ?? this.status,
+      priority: priority ?? this.priority,
       dueDate: dueDate ?? this.dueDate,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -43,6 +47,7 @@ class TaskModel {
       'title': title,
       'description': description,
       'status': status,
+      'priority': priority,
       'due_date': dueDate?.toIso8601String(),
       'created_at': createdAt?.toIso8601String(),
       'updated_at': updatedAt?.toIso8601String(),
@@ -55,6 +60,7 @@ class TaskModel {
       title: map['title'] as String,
       description: map['description'] as String,
       status: map['status'] as String,
+      priority: (map['priority'] as String?) ?? 'medium',
       dueDate: _parseDate(map['due_date']),
       createdAt: _parseDate(map['created_at']),
       updatedAt: _parseDate(map['updated_at']),
