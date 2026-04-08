@@ -58,11 +58,11 @@
 
 ## Minggu 8 - UTS dan Preview Progres
 
-- [ ] Demo end-to-end fondasi berjalan.
-- [ ] Bug kritis terdokumentasi.
-- [ ] Backlog perbaikan minggu 9-14 disusun.
-- [ ] Risiko teknis utama dipetakan.
-- [ ] Dokumen UTS selesai (progress, risiko, rencana lanjut).
+- [x] Demo end-to-end fondasi berjalan.
+- [x] Bug kritis terdokumentasi.
+- [x] Backlog perbaikan minggu 9-14 disusun.
+- [x] Risiko teknis utama dipetakan.
+- [x] Dokumen UTS selesai (progress, risiko, rencana lanjut).
 
 ## Minggu 9 - Integrasi Dasar Gemini API
 
