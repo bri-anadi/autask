@@ -1,11 +1,8 @@
 import 'package:autask/app/theme/app_colors.dart';
 import 'package:autask/app/theme/app_radius.dart';
 import 'package:autask/app/theme/app_spacing.dart';
-import 'package:autask/app/di/injection.dart';
 import 'package:autask/core/constants/app_strings.dart';
 import 'package:autask/core/utils/date_formatter.dart';
-import 'package:autask/features/ai_settings/presentation/cubit/ai_settings_cubit.dart';
-import 'package:autask/features/ai_settings/presentation/pages/ai_settings_page.dart';
 import 'package:autask/features/task/domain/entities/task.dart';
 import 'package:autask/features/task/presentation/cubit/task_cubit.dart';
 import 'package:autask/features/task/presentation/cubit/task_state.dart';
@@ -21,34 +18,12 @@ class TaskHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(AppStrings.taskPageTitle),
-        actions: <Widget>[
-          IconButton(
-            tooltip: AppStrings.aiSettingsLabel,
-            onPressed: () {
-              _openAiSettings(context: context);
-            },
-            icon: const HeroIcon(
-              HeroIcons.cog6Tooth,
-              color: Colors.white,
-              style: HeroIconStyle.outline,
-            ),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text(AppStrings.taskPageTitle)),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            BlocSelector<TaskCubit, TaskState, List<Task>>(
-              selector: (TaskState state) => state.allTasks,
-              builder: (BuildContext context, List<Task> allTasks) {
-                return _OverviewPanel(tasks: allTasks);
-              },
-            ),
-            const SizedBox(height: AppSpacing.md),
             BlocSelector<
               TaskCubit,
               TaskState,
@@ -77,6 +52,19 @@ class TaskHomePage extends StatelessWidget {
                       },
                     );
                   },
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            TextField(
+              onChanged: (String value) {
+                context.read<TaskCubit>().setSearchQuery(searchQuery: value);
+              },
+              decoration: InputDecoration(
+                hintText: 'Cari tugas...',
+                prefixIcon: const HeroIcon(
+                  HeroIcons.magnifyingGlass,
+                  style: HeroIconStyle.outline,
+                ),
+              ),
             ),
             const SizedBox(height: AppSpacing.md),
             Expanded(
@@ -195,7 +183,7 @@ class TaskHomePage extends StatelessWidget {
                     TextField(
                       controller: titleController,
                       decoration: const InputDecoration(
-                        labelText: AppStrings.titleLabel,
+                        hintText: 'Judul tugas',
                       ),
                       autofocus: true,
                     ),
@@ -203,7 +191,7 @@ class TaskHomePage extends StatelessWidget {
                     TextField(
                       controller: descriptionController,
                       decoration: const InputDecoration(
-                        labelText: AppStrings.descriptionLabel,
+                        hintText: 'Deskripsi tugas',
                       ),
                       maxLines: 3,
                     ),
@@ -294,14 +282,14 @@ class TaskHomePage extends StatelessWidget {
                     TextField(
                       controller: titleController,
                       decoration: const InputDecoration(
-                        labelText: AppStrings.titleLabel,
+                        hintText: 'Judul tugas',
                       ),
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     TextField(
                       controller: descriptionController,
                       decoration: const InputDecoration(
-                        labelText: AppStrings.descriptionLabel,
+                        hintText: 'Deskripsi tugas',
                       ),
                       maxLines: 3,
                     ),
@@ -386,17 +374,6 @@ class TaskHomePage extends StatelessWidget {
       initialDate: initialDate ?? now,
     );
   }
-
-  void _openAiSettings({required BuildContext context}) {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => BlocProvider<AiSettingsCubit>(
-          create: (_) => sl<AiSettingsCubit>()..loadSavedKey(),
-          child: const AiSettingsPage(),
-        ),
-      ),
-    );
-  }
 }
 
 class _FilterSortSection extends StatelessWidget {
@@ -420,9 +397,7 @@ class _FilterSortSection extends StatelessWidget {
           child: DropdownButtonFormField<TaskStatusFilter>(
             initialValue: selectedFilter,
             isExpanded: true,
-            decoration: const InputDecoration(
-              labelText: AppStrings.filterLabel,
-            ),
+            decoration: const InputDecoration(hintText: 'Filter status'),
             items: const <DropdownMenuItem<TaskStatusFilter>>[
               DropdownMenuItem<TaskStatusFilter>(
                 value: TaskStatusFilter.all,
@@ -454,7 +429,7 @@ class _FilterSortSection extends StatelessWidget {
           child: DropdownButtonFormField<TaskSortOption>(
             initialValue: selectedSortOption,
             isExpanded: true,
-            decoration: const InputDecoration(labelText: AppStrings.sortLabel),
+            decoration: const InputDecoration(hintText: 'Urutkan'),
             items: const <DropdownMenuItem<TaskSortOption>>[
               DropdownMenuItem<TaskSortOption>(
                 value: TaskSortOption.latestCreated,
@@ -492,7 +467,7 @@ class _StatusDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       initialValue: value,
-      decoration: const InputDecoration(labelText: AppStrings.statusLabel),
+      decoration: const InputDecoration(hintText: 'Status'),
       items: const <DropdownMenuItem<String>>[
         DropdownMenuItem<String>(
           value: AppStrings.todoStatus,
@@ -527,7 +502,7 @@ class _PriorityDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       initialValue: value,
-      decoration: const InputDecoration(labelText: AppStrings.priorityLabel),
+      decoration: const InputDecoration(hintText: 'Prioritas'),
       items: const <DropdownMenuItem<String>>[
         DropdownMenuItem<String>(
           value: AppStrings.highPriority,
@@ -568,9 +543,14 @@ class _DueDatePickerField extends StatelessWidget {
     return Row(
       children: <Widget>[
         Expanded(
-          child: InputDecorator(
-            decoration: const InputDecoration(
-              labelText: AppStrings.dueDateLabel,
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.md,
+              vertical: AppSpacing.md,
+            ),
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(AppRadius.md),
             ),
             child: Text(
               selectedDueDate == null
@@ -594,121 +574,6 @@ class _DueDatePickerField extends StatelessWidget {
           icon: const HeroIcon(HeroIcons.xMark, style: HeroIconStyle.outline),
         ),
       ],
-    );
-  }
-}
-
-class _OverviewPanel extends StatelessWidget {
-  const _OverviewPanel({required this.tasks});
-
-  final List<Task> tasks;
-
-  @override
-  Widget build(BuildContext context) {
-    final int todoCount = tasks
-        .where((Task task) => task.status == AppStrings.todoStatus)
-        .length;
-    final int inProgressCount = tasks
-        .where((Task task) => task.status == AppStrings.inProgressStatus)
-        .length;
-    final int doneCount = tasks
-        .where((Task task) => task.status == AppStrings.doneStatus)
-        .length;
-
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.md),
-      decoration: BoxDecoration(
-        color: AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            AppStrings.taskPageTitle,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            AppStrings.taskPageSubtitle,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Row(
-            children: <Widget>[
-              Expanded(
-                child: _OverviewBadge(
-                  icon: HeroIcons.queueList,
-                  count: todoCount,
-                  label: 'To Do',
-                ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: _OverviewBadge(
-                  icon: HeroIcons.clock,
-                  count: inProgressCount,
-                  label: 'In Progress',
-                ),
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Expanded(
-                child: _OverviewBadge(
-                  icon: HeroIcons.checkBadge,
-                  count: doneCount,
-                  label: 'Done',
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _OverviewBadge extends StatelessWidget {
-  const _OverviewBadge({
-    required this.icon,
-    required this.count,
-    required this.label,
-  });
-
-  final HeroIcons icon;
-  final int count;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: AppSpacing.sm,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(AppRadius.md),
-      ),
-      child: Row(
-        children: <Widget>[
-          HeroIcon(
-            icon,
-            size: 16,
-            color: AppColors.primaryDark,
-            style: HeroIconStyle.outline,
-          ),
-          const SizedBox(width: AppSpacing.xs),
-          Text('$count', style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(width: AppSpacing.xs),
-          Flexible(
-            child: Text(
-              label,
-              overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

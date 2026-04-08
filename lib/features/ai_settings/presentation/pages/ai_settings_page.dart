@@ -62,7 +62,6 @@ class _AiSettingsPageState extends State<AiSettingsPage> {
                 controller: _apiKeyController,
                 obscureText: !state.isKeyVisible,
                 decoration: InputDecoration(
-                  labelText: AppStrings.aiApiKeyLabel,
                   hintText: AppStrings.aiApiKeyHint,
                   suffixIcon: IconButton(
                     onPressed: cubit.toggleKeyVisibility,

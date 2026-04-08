@@ -11,12 +11,14 @@ abstract class TaskState extends Equatable {
     required this.tasks,
     required this.statusFilter,
     required this.sortOption,
+    required this.searchQuery,
   });
 
   final List<Task> allTasks;
   final List<Task> tasks;
   final TaskStatusFilter statusFilter;
   final TaskSortOption sortOption;
+  final String searchQuery;
 
   @override
   List<Object?> get props => <Object?>[
@@ -24,6 +26,7 @@ abstract class TaskState extends Equatable {
     tasks,
     statusFilter,
     sortOption,
+    searchQuery,
   ];
 }
 
@@ -34,6 +37,7 @@ class TaskInitial extends TaskState {
         tasks: const <Task>[],
         statusFilter: TaskStatusFilter.all,
         sortOption: TaskSortOption.latestCreated,
+        searchQuery: '',
       );
 }
 
@@ -43,6 +47,7 @@ class TaskLoading extends TaskState {
     required super.tasks,
     required super.statusFilter,
     required super.sortOption,
+    required super.searchQuery,
   });
 }
 
@@ -52,6 +57,7 @@ class TaskLoaded extends TaskState {
     required super.tasks,
     required super.statusFilter,
     required super.sortOption,
+    required super.searchQuery,
   });
 }
 
@@ -61,6 +67,7 @@ class TaskError extends TaskState {
     required super.tasks,
     required super.statusFilter,
     required super.sortOption,
+    required super.searchQuery,
     required this.message,
   });
 
@@ -72,6 +79,7 @@ class TaskError extends TaskState {
     tasks,
     statusFilter,
     sortOption,
+    searchQuery,
     message,
   ];
 }

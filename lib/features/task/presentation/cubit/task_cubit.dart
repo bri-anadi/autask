@@ -33,6 +33,7 @@ class TaskCubit extends Cubit<TaskState> {
           allTasks: tasks,
           statusFilter: state.statusFilter,
           sortOption: state.sortOption,
+          searchQuery: state.searchQuery,
         ),
       );
     } catch (_) {
@@ -66,6 +67,7 @@ class TaskCubit extends Cubit<TaskState> {
           allTasks: tasks,
           statusFilter: state.statusFilter,
           sortOption: state.sortOption,
+          searchQuery: state.searchQuery,
         ),
       );
     } catch (_) {
@@ -103,6 +105,7 @@ class TaskCubit extends Cubit<TaskState> {
           allTasks: tasks,
           statusFilter: state.statusFilter,
           sortOption: state.sortOption,
+          searchQuery: state.searchQuery,
         ),
       );
     } catch (_) {
@@ -131,6 +134,7 @@ class TaskCubit extends Cubit<TaskState> {
           allTasks: tasks,
           statusFilter: state.statusFilter,
           sortOption: state.sortOption,
+          searchQuery: state.searchQuery,
         ),
       );
     } catch (_) {
@@ -144,6 +148,7 @@ class TaskCubit extends Cubit<TaskState> {
         allTasks: state.allTasks,
         statusFilter: statusFilter,
         sortOption: state.sortOption,
+        searchQuery: state.searchQuery,
       ),
     );
   }
@@ -154,6 +159,18 @@ class TaskCubit extends Cubit<TaskState> {
         allTasks: state.allTasks,
         statusFilter: state.statusFilter,
         sortOption: sortOption,
+        searchQuery: state.searchQuery,
+      ),
+    );
+  }
+
+  void setSearchQuery({required String searchQuery}) {
+    emit(
+      _toLoaded(
+        allTasks: state.allTasks,
+        statusFilter: state.statusFilter,
+        sortOption: state.sortOption,
+        searchQuery: searchQuery,
       ),
     );
   }
@@ -164,6 +181,7 @@ class TaskCubit extends Cubit<TaskState> {
       tasks: state.tasks,
       statusFilter: state.statusFilter,
       sortOption: state.sortOption,
+      searchQuery: state.searchQuery,
     );
   }
 
@@ -171,11 +189,13 @@ class TaskCubit extends Cubit<TaskState> {
     required List<Task> allTasks,
     required TaskStatusFilter statusFilter,
     required TaskSortOption sortOption,
+    required String searchQuery,
   }) {
     final List<Task> viewedTasks = _buildViewTasks(
       allTasks: allTasks,
       statusFilter: statusFilter,
       sortOption: sortOption,
+      searchQuery: searchQuery,
     );
 
     return TaskLoaded(
@@ -183,6 +203,7 @@ class TaskCubit extends Cubit<TaskState> {
       tasks: viewedTasks,
       statusFilter: statusFilter,
       sortOption: sortOption,
+      searchQuery: searchQuery,
     );
   }
 
@@ -192,6 +213,7 @@ class TaskCubit extends Cubit<TaskState> {
       tasks: state.tasks,
       statusFilter: state.statusFilter,
       sortOption: state.sortOption,
+      searchQuery: state.searchQuery,
       message: message,
     );
   }
@@ -200,18 +222,31 @@ class TaskCubit extends Cubit<TaskState> {
     required List<Task> allTasks,
     required TaskStatusFilter statusFilter,
     required TaskSortOption sortOption,
+    required String searchQuery,
   }) {
+    final String normalizedSearch = searchQuery.trim().toLowerCase();
+
     final Iterable<Task> filteredTasks = allTasks.where((Task task) {
-      switch (statusFilter) {
-        case TaskStatusFilter.all:
-          return true;
-        case TaskStatusFilter.todo:
-          return task.status == AppStrings.todoStatus;
-        case TaskStatusFilter.inProgress:
-          return task.status == AppStrings.inProgressStatus;
-        case TaskStatusFilter.done:
-          return task.status == AppStrings.doneStatus;
+      final bool statusMatch = switch (statusFilter) {
+        TaskStatusFilter.all => true,
+        TaskStatusFilter.todo => task.status == AppStrings.todoStatus,
+        TaskStatusFilter.inProgress =>
+          task.status == AppStrings.inProgressStatus,
+        TaskStatusFilter.done => task.status == AppStrings.doneStatus,
+      };
+
+      if (!statusMatch) {
+        return false;
       }
+
+      if (normalizedSearch.isEmpty) {
+        return true;
+      }
+
+      final String inTitle = task.title.toLowerCase();
+      final String inDescription = task.description.toLowerCase();
+      return inTitle.contains(normalizedSearch) ||
+          inDescription.contains(normalizedSearch);
     });
 
     final List<Task> sortedTasks = filteredTasks.toList(growable: false);
