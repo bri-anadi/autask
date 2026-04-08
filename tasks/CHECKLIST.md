@@ -50,11 +50,11 @@
 
 ## Minggu 7 - BYOK Gemini dan Secure Storage
 
-- [ ] Halaman setting AI tersedia.
-- [ ] Simpan/hapus API key berjalan.
-- [ ] Validasi input key dan masking key berjalan.
-- [ ] Tidak ada hardcoded key/secret di source code.
-- [ ] LP6 selesai (alur BYOK, bukti aman, screenshot sukses/gagal).
+- [x] Halaman setting AI tersedia.
+- [x] Simpan/hapus API key berjalan.
+- [x] Validasi input key dan masking key berjalan.
+- [x] Tidak ada hardcoded key/secret di source code.
+- [x] LP6 selesai (alur BYOK, bukti aman, screenshot sukses/gagal).
 
 ## Minggu 8 - UTS dan Preview Progres
 

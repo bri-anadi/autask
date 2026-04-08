@@ -1,7 +1,10 @@
 import 'package:autask/app/theme/app_spacing.dart';
+import 'package:autask/app/di/injection.dart';
 import 'package:autask/core/constants/app_strings.dart';
 import 'package:autask/core/utils/date_formatter.dart';
 import 'package:autask/core/widgets/app_section_card.dart';
+import 'package:autask/features/ai_settings/presentation/cubit/ai_settings_cubit.dart';
+import 'package:autask/features/ai_settings/presentation/pages/ai_settings_page.dart';
 import 'package:autask/features/task/domain/entities/task.dart';
 import 'package:autask/features/task/presentation/cubit/task_cubit.dart';
 import 'package:autask/features/task/presentation/cubit/task_state.dart';
@@ -16,7 +19,18 @@ class TaskHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(AppStrings.taskPageTitle)),
+      appBar: AppBar(
+        title: const Text(AppStrings.taskPageTitle),
+        actions: <Widget>[
+          IconButton(
+            tooltip: AppStrings.aiSettingsLabel,
+            onPressed: () {
+              _openAiSettings(context: context);
+            },
+            icon: const Icon(Icons.settings_outlined),
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Column(
@@ -333,6 +347,17 @@ class TaskHomePage extends StatelessWidget {
       firstDate: DateTime(now.year - 2),
       lastDate: DateTime(now.year + 5),
       initialDate: initialDate ?? now,
+    );
+  }
+
+  void _openAiSettings({required BuildContext context}) {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (_) => BlocProvider<AiSettingsCubit>(
+          create: (_) => sl<AiSettingsCubit>()..loadSavedKey(),
+          child: const AiSettingsPage(),
+        ),
+      ),
     );
   }
 }

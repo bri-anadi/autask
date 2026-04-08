@@ -25,6 +25,30 @@ class AppStrings {
   static const String deleteTaskLabel = 'Hapus tugas';
   static const String editTaskLabel = 'Edit tugas';
   static const String quickStatusLabel = 'Ubah status cepat';
+  static const String aiSettingsLabel = 'Pengaturan AI';
+
+  static const String aiSettingsTitle = 'Pengaturan Gemini (BYOK)';
+  static const String aiSettingsDescription =
+      'Masukkan API key Gemini Anda sendiri. Kunci disimpan aman di secure storage perangkat dan tidak di-hardcode di source code.';
+  static const String aiApiKeyLabel = 'API Key Gemini';
+  static const String aiApiKeyHint = 'Contoh: AIza...';
+  static const String aiSaveKeyButton = 'Simpan API Key';
+  static const String aiDeleteKeyButton = 'Hapus API Key';
+  static const String aiSavedKeyTitle = 'API Key Tersimpan (Masked)';
+  static const String aiNoSavedKeyLabel =
+      'Belum ada API key tersimpan di perangkat.';
+
+  static const String aiLoadKeyError = 'Gagal memuat API key tersimpan';
+  static const String aiSaveKeyError = 'Gagal menyimpan API key';
+  static const String aiDeleteKeyError = 'Gagal menghapus API key';
+  static const String aiSaveKeySuccess = 'API key berhasil disimpan';
+  static const String aiDeleteKeySuccess = 'API key berhasil dihapus';
+  static const String aiValidationEmptyKey = 'API key tidak boleh kosong';
+  static const String aiValidationNoSpaces =
+      'API key tidak boleh mengandung spasi';
+  static const String aiValidationMinimumLength = 'API key minimal 20 karakter';
+  static const String aiValidationPrefix =
+      'Format API key tidak valid (harus diawali AIza)';
 
   static const String todoStatus = 'todo';
   static const String inProgressStatus = 'in progress';
