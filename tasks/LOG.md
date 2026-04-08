@@ -27,6 +27,14 @@ Dokumen ini dipakai untuk sinkronisasi progres mingguan berdasarkan commit hash.
 
 Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 
+- `8096f3b` `feat(ui): refresh teal theme and task surfaces`
+- `a4698df` `feat(ui): add home settings navigation and search-first layout`
+- `a8edcd8` `feat(ui): refactor heroicons and task layout`
+- `6b5e11f` `docs(guides): add weekly practical report guides`
+- `2cc548c` `docs(week8): add uts progress report`
+- `0f9591a` `feat(ai): implement week 7 byok secure storage`
+- `3f9583a` `feat(task): implement week 6 productivity flow`
+- `e25d158` `docs(tasks): update week 5 log`
 - `3f56a09` `docs(week5): update rules checklist and report`
 - `0efafa8` `feat(data): implement week 5 sqflite persistence`
 - `673e9b7` `docs(reports): track weekly reports`
@@ -103,3 +111,35 @@ Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 - Perubahan utama: persistence task dipindah ke `sqflite`, migration dasar ditambahkan, checklist Week 5 ditandai selesai, serta LP4/report Week 5 dibuat.
 - Kendala: tidak ada blocker kritis.
 - Rencana minggu berikutnya: lanjut fitur produktivitas task (priority, filter, sort) untuk Week 6.
+
+## Minggu 6 - 2026-04-08
+
+- Commit: `3f9583a`
+- Pesan: `feat(task): implement week 6 productivity flow`
+- Perubahan utama: fitur produktivitas task ditambahkan (filter status, sorting prioritas/deadline, quick action update status) dan alur penggunaan harian dibuat lebih usable.
+- Kendala: belum ada blocker kritis.
+- Rencana minggu berikutnya: lanjut integrasi BYOK Gemini dan secure storage untuk Week 7.
+
+## Minggu 7 - 2026-04-08
+
+- Commit: `0f9591a`
+- Pesan: `feat(ai): implement week 7 byok secure storage`
+- Perubahan utama: pengaturan AI BYOK dibuat, simpan/hapus API key di secure storage, validasi input key, masking key, dan feedback sukses/gagal.
+- Kendala: tidak ada blocker kritis.
+- Rencana minggu berikutnya: susun dokumen UTS/progress Week 8.
+
+## Minggu 8 - 2026-04-08
+
+- Commit: `2cc548c`
+- Pesan: `docs(week8): add uts progress report`
+- Perubahan utama: dokumen progres UTS ditambahkan untuk memvalidasi fondasi proyek dan rencana lanjutan minggu 9-14.
+- Kendala: tidak ada blocker kritis.
+- Rencana minggu berikutnya: lanjutkan integrasi dasar Gemini API untuk Week 9.
+
+## Update UI Lanjutan - 2026-04-08
+
+- Commit: `6b5e11f`, `a8edcd8`, `a4698df`, `8096f3b`
+- Pesan: `docs(guides): add weekly practical report guides`; `feat(ui): refactor heroicons and task layout`; `feat(ui): add home settings navigation and search-first layout`; `feat(ui): refresh teal theme and task surfaces`
+- Perubahan utama: guidebook mingguan ditambahkan, layout aplikasi dirapikan (search/filter/list-first), bottom navigation home/settings ditambahkan, ikon distandarkan ke Heroicons, tema teal diterapkan, modal/form/dropdown disesuaikan dengan gaya flat rounded.
+- Kendala: sempat ada inkonsistensi rounded pada swipe action, sudah diperbaiki pada iterasi UI.
+- Rencana berikutnya: lanjutkan implementasi milestone Week 9 sesuai checklist.
