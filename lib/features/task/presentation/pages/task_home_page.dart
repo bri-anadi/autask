@@ -98,42 +98,49 @@ class TaskHomePage extends StatelessWidget {
                     itemBuilder: (BuildContext context, int index) {
                       final Task task = state.tasks[index];
                       final TaskCubit taskCubit = context.read<TaskCubit>();
-                      return Dismissible(
-                        key: ValueKey<int>(task.id),
-                        direction: DismissDirection.horizontal,
-                        background: _SwipeActionBackground(
-                          alignment: Alignment.centerLeft,
-                          icon: HeroIcons.trash,
-                          color: Colors.red.shade600,
-                        ),
-                        secondaryBackground: _SwipeActionBackground(
-                          alignment: Alignment.centerRight,
-                          icon: HeroIcons.pencilSquare,
-                          color: AppColors.primary,
-                        ),
-                        confirmDismiss: (DismissDirection direction) async {
-                          if (direction == DismissDirection.endToStart) {
-                            await _showEditTaskDialog(
-                              context: context,
-                              task: task,
-                            );
-                            return false;
-                          }
-
-                          return true;
-                        },
-                        onDismissed: (DismissDirection direction) {
-                          if (direction == DismissDirection.startToEnd) {
-                            taskCubit.deleteTask(id: task.id);
-                          }
-                        },
-                        child: TaskListItem(
-                          task: task,
-                          onTap: () =>
-                              _openTaskDetail(context: context, task: task),
-                          onQuickStatus: () {
-                            taskCubit.quickUpdateTaskStatus(task: task);
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(AppRadius.lg),
+                        child: Dismissible(
+                          key: ValueKey<int>(task.id),
+                          direction: DismissDirection.horizontal,
+                          dismissThresholds: const <DismissDirection, double>{
+                            DismissDirection.startToEnd: 0.2,
+                            DismissDirection.endToStart: 0.2,
                           },
+                          background: _SwipeActionBackground(
+                            alignment: Alignment.centerLeft,
+                            icon: HeroIcons.trash,
+                            color: Colors.red.shade600,
+                          ),
+                          secondaryBackground: _SwipeActionBackground(
+                            alignment: Alignment.centerRight,
+                            icon: HeroIcons.pencilSquare,
+                            color: AppColors.primary,
+                          ),
+                          confirmDismiss: (DismissDirection direction) async {
+                            if (direction == DismissDirection.endToStart) {
+                              await _showEditTaskDialog(
+                                context: context,
+                                task: task,
+                              );
+                              return false;
+                            }
+
+                            return true;
+                          },
+                          onDismissed: (DismissDirection direction) {
+                            if (direction == DismissDirection.startToEnd) {
+                              taskCubit.deleteTask(id: task.id);
+                            }
+                          },
+                          child: TaskListItem(
+                            task: task,
+                            onTap: () =>
+                                _openTaskDetail(context: context, task: task),
+                            onQuickStatus: () {
+                              taskCubit.quickUpdateTaskStatus(task: task);
+                            },
+                          ),
                         ),
                       );
                     },
@@ -175,11 +182,30 @@ class TaskHomePage extends StatelessWidget {
         return StatefulBuilder(
           builder: (BuildContext builderContext, StateSetter setState) {
             return AlertDialog(
+              backgroundColor: AppColors.modalSurface,
+              surfaceTintColor: Colors.transparent,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+              ),
+              insetPadding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg,
+                vertical: AppSpacing.xl,
+              ),
               title: const Text(AppStrings.addTaskDialogTitle),
+              titlePadding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.sm,
+              ),
               content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
+                child: SizedBox(
+                  width: double.maxFinite,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
                     TextField(
                       controller: titleController,
                       decoration: const InputDecoration(
@@ -225,8 +251,21 @@ class TaskHomePage extends StatelessWidget {
                         });
                       },
                     ),
-                  ],
+                    ],
+                  ),
                 ),
+              ),
+              contentPadding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                0,
+                AppSpacing.lg,
+                AppSpacing.md,
+              ),
+              actionsPadding: const EdgeInsets.fromLTRB(
+                AppSpacing.md,
+                0,
+                AppSpacing.md,
+                AppSpacing.md,
               ),
               actions: <Widget>[
                 TextButton(
@@ -274,11 +313,30 @@ class TaskHomePage extends StatelessWidget {
         return StatefulBuilder(
           builder: (BuildContext builderContext, StateSetter setState) {
             return AlertDialog(
+              backgroundColor: AppColors.modalSurface,
+              surfaceTintColor: Colors.transparent,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+              ),
+              insetPadding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.lg,
+                vertical: AppSpacing.xl,
+              ),
               title: const Text(AppStrings.editTaskDialogTitle),
+              titlePadding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.lg,
+                AppSpacing.sm,
+              ),
               content: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
+                child: SizedBox(
+                  width: double.maxFinite,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
                     TextField(
                       controller: titleController,
                       decoration: const InputDecoration(
@@ -332,8 +390,21 @@ class TaskHomePage extends StatelessWidget {
                         });
                       },
                     ),
-                  ],
+                    ],
+                  ),
                 ),
+              ),
+              contentPadding: const EdgeInsets.fromLTRB(
+                AppSpacing.lg,
+                0,
+                AppSpacing.lg,
+                AppSpacing.md,
+              ),
+              actionsPadding: const EdgeInsets.fromLTRB(
+                AppSpacing.md,
+                0,
+                AppSpacing.md,
+                AppSpacing.md,
               ),
               actions: <Widget>[
                 TextButton(
@@ -397,7 +468,14 @@ class _FilterSortSection extends StatelessWidget {
           child: DropdownButtonFormField<TaskStatusFilter>(
             initialValue: selectedFilter,
             isExpanded: true,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            dropdownColor: AppColors.surface,
+            elevation: 0,
             decoration: const InputDecoration(hintText: 'Filter status'),
+            icon: const HeroIcon(
+              HeroIcons.chevronDown,
+              style: HeroIconStyle.outline,
+            ),
             items: const <DropdownMenuItem<TaskStatusFilter>>[
               DropdownMenuItem<TaskStatusFilter>(
                 value: TaskStatusFilter.all,
@@ -429,7 +507,14 @@ class _FilterSortSection extends StatelessWidget {
           child: DropdownButtonFormField<TaskSortOption>(
             initialValue: selectedSortOption,
             isExpanded: true,
+            borderRadius: BorderRadius.circular(AppRadius.md),
+            dropdownColor: AppColors.surface,
+            elevation: 0,
             decoration: const InputDecoration(hintText: 'Urutkan'),
+            icon: const HeroIcon(
+              HeroIcons.chevronDown,
+              style: HeroIconStyle.outline,
+            ),
             items: const <DropdownMenuItem<TaskSortOption>>[
               DropdownMenuItem<TaskSortOption>(
                 value: TaskSortOption.latestCreated,
@@ -467,7 +552,14 @@ class _StatusDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       initialValue: value,
+      borderRadius: BorderRadius.circular(AppRadius.md),
+      dropdownColor: AppColors.surface,
+      elevation: 0,
       decoration: const InputDecoration(hintText: 'Status'),
+      icon: const HeroIcon(
+        HeroIcons.chevronDown,
+        style: HeroIconStyle.outline,
+      ),
       items: const <DropdownMenuItem<String>>[
         DropdownMenuItem<String>(
           value: AppStrings.todoStatus,
@@ -502,7 +594,14 @@ class _PriorityDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
       initialValue: value,
+      borderRadius: BorderRadius.circular(AppRadius.md),
+      dropdownColor: AppColors.surface,
+      elevation: 0,
       decoration: const InputDecoration(hintText: 'Prioritas'),
+      icon: const HeroIcon(
+        HeroIcons.chevronDown,
+        style: HeroIconStyle.outline,
+      ),
       items: const <DropdownMenuItem<String>>[
         DropdownMenuItem<String>(
           value: AppStrings.highPriority,
@@ -593,12 +692,24 @@ class _SwipeActionBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: alignment,
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.sm,
+        vertical: AppSpacing.xs,
       ),
-      child: HeroIcon(icon, color: Colors.white, style: HeroIconStyle.outline),
+      child: Container(
+        width: 64,
+        constraints: const BoxConstraints(minHeight: 56),
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+        ),
+        alignment: Alignment.center,
+        child: HeroIcon(
+          icon,
+          color: Colors.white,
+          style: HeroIconStyle.outline,
+        ),
+      ),
     );
   }
 }

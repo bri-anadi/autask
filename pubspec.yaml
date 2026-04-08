@@ -64,11 +64,11 @@ flutter:
   uses-material-design: true
 
   fonts:
-    - family: BricolageGrotesque
+    - family: PlusJakartaSans
       fonts:
-        - asset: assets/fonts/BricolageGrotesque-Regular.ttf
+        - asset: assets/fonts/PlusJakartaSans-Regular.ttf
           weight: 400
-        - asset: assets/fonts/BricolageGrotesque-SemiBold.ttf
+        - asset: assets/fonts/PlusJakartaSans-SemiBold.ttf
           weight: 600
 
   # To add assets to your application, add an assets section, like this:

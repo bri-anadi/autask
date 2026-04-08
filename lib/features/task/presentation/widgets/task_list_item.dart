@@ -2,6 +2,7 @@ import 'package:autask/app/theme/app_colors.dart';
 import 'package:autask/app/theme/app_radius.dart';
 import 'package:autask/app/theme/app_spacing.dart';
 import 'package:autask/core/constants/app_strings.dart';
+import 'package:autask/core/utils/date_formatter.dart';
 import 'package:autask/features/task/domain/entities/task.dart';
 import 'package:flutter/material.dart';
 import 'package:heroicons/heroicons.dart';
@@ -27,7 +28,7 @@ class TaskListItem extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        child: Container(
+        child: Padding(
           padding: const EdgeInsets.all(AppSpacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,25 +43,31 @@ class TaskListItem extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _MetaIcon(
-                    icon: HeroIcons.flag,
-                    color: _statusColor(status: task.status),
-                    tooltip: AppStrings.statusLabel,
+                  Expanded(
+                    child: Wrap(
+                      spacing: AppSpacing.xs,
+                      runSpacing: AppSpacing.xs,
+                      children: <Widget>[
+                        _MetaInfoChip(
+                          icon: HeroIcons.flag,
+                          value: AppStrings.statusText(status: task.status),
+                          color: _statusColor(status: task.status),
+                        ),
+                        _MetaInfoChip(
+                          icon: HeroIcons.tag,
+                          value: AppStrings.priorityText(priority: task.priority),
+                          color: _priorityColor(priority: task.priority),
+                        ),
+                        _MetaInfoChip(
+                          icon: HeroIcons.calendar,
+                          value: _dueDateText(dueDate: task.dueDate),
+                          color: _deadlineColor(dueDate: task.dueDate),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(width: AppSpacing.sm),
-                  _MetaIcon(
-                    icon: HeroIcons.tag,
-                    color: _priorityColor(priority: task.priority),
-                    tooltip: AppStrings.priorityLabel,
-                  ),
-                  const SizedBox(width: AppSpacing.sm),
-                  _MetaIcon(
-                    icon: HeroIcons.calendar,
-                    color: _deadlineColor(dueDate: task.dueDate),
-                    tooltip: AppStrings.dueDateLabel,
-                  ),
-                  const Spacer(),
                   IconButton(
                     tooltip: AppStrings.quickStatusLabel,
                     onPressed: onQuickStatus,
@@ -120,31 +127,49 @@ class TaskListItem extends StatelessWidget {
 
     return AppColors.primaryDark;
   }
+
+  String _dueDateText({required DateTime? dueDate}) {
+    if (dueDate == null) {
+      return '-';
+    }
+    return DateFormatter.dmy(dueDate);
+  }
 }
 
-class _MetaIcon extends StatelessWidget {
-  const _MetaIcon({
+class _MetaInfoChip extends StatelessWidget {
+  const _MetaInfoChip({
     required this.icon,
+    required this.value,
     required this.color,
-    required this.tooltip,
   });
 
   final HeroIcons icon;
+  final String value;
   final Color color;
-  final String tooltip;
 
   @override
   Widget build(BuildContext context) {
-    return Tooltip(
-      message: tooltip,
-      child: Container(
-        width: 34,
-        height: 34,
-        decoration: BoxDecoration(
-          color: AppColors.primaryLight,
-          borderRadius: BorderRadius.circular(AppRadius.md),
-        ),
-        child: HeroIcon(icon, color: color, size: 18),
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.sm,
+        vertical: AppSpacing.xs,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.primaryLight,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          HeroIcon(icon, color: color, size: 16, style: HeroIconStyle.outline),
+          const SizedBox(width: AppSpacing.xs),
+          Text(
+            value,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.textPrimary),
+          ),
+        ],
       ),
     );
   }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class AppTypography {
   const AppTypography._();
 
-  static const String fontFamily = 'BricolageGrotesque';
+  static const String fontFamily = 'PlusJakartaSans';
 
   static const TextStyle titleMedium = TextStyle(
     fontFamily: fontFamily,
