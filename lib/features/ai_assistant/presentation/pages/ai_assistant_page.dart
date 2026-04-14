@@ -94,6 +94,7 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
                     children: <Widget>[
                       Expanded(
                         child: FilledButton.icon(
+                          key: const Key('ai_assistant_review_draft_button'),
                           onPressed: () {
                             _openDraftConfirmationSheet(
                               context: context,
@@ -166,6 +167,8 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
     required BuildContext context,
     required TaskDraft draft,
   }) async {
+    final TaskCubit taskCubit = context.read<TaskCubit>();
+    final AiAssistantCubit aiAssistantCubit = context.read<AiAssistantCubit>();
     final TextEditingController titleController = TextEditingController(
       text: draft.title,
     );
@@ -244,8 +247,9 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
                   ),
                   const SizedBox(height: AppSpacing.md),
                   FilledButton(
+                    key: const Key('ai_assistant_save_draft_button'),
                     onPressed: () async {
-                      await context.read<TaskCubit>().addTask(
+                      await taskCubit.addTask(
                         title: titleController.text,
                         description: descriptionController.text,
                         priority: selectedPriority,
@@ -254,9 +258,7 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
                       if (!builderContext.mounted) {
                         return;
                       }
-                      builderContext
-                          .read<AiAssistantCubit>()
-                          .clearLatestExtraction();
+                      aiAssistantCubit.clearLatestExtraction();
                       Navigator.of(builderContext).pop();
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()

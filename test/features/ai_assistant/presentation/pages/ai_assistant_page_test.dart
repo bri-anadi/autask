@@ -36,4 +36,49 @@ void main() {
 
     expect(find.text('Ini draft task dari AI.'), findsOneWidget);
   });
+
+  testWidgets('AI draft can be reviewed and saved into task list', (
+    WidgetTester tester,
+  ) async {
+    await configureDependencies(
+      useInMemoryTaskDataSource: true,
+      useInMemoryAiKeyDataSource: true,
+      aiAssistantRemoteDataSource: InMemoryAiAssistantRemoteDataSource(
+        responseText:
+            '{"title":"Belajar Flutter Bloc","description":"Pelajari cubit dan state","status":"todo","priority":"medium","due_date":"2026-04-20"}',
+      ),
+    );
+
+    await sl<SaveAiKeyUseCase>().call(apiKey: 'AIza_valid_key_1234567890');
+
+    await tester.pumpWidget(const AutaskApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(AppStrings.aiAssistantNavLabel));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const Key('ai_assistant_input')),
+      'Buatkan task belajar bloc',
+    );
+    await tester.tap(find.byKey(const Key('ai_assistant_send_button')));
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.aiAssistantDraftReady), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('ai_assistant_review_draft_button')));
+    await tester.pumpAndSettle();
+
+    expect(find.text(AppStrings.aiAssistantConfirmSheetTitle), findsOneWidget);
+
+    await tester.tap(find.byKey(const Key('ai_assistant_save_draft_button')));
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Home'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Belajar Flutter Bloc'), findsOneWidget);
+  });
 }
