@@ -206,51 +206,51 @@ class TaskHomePage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                    TextField(
-                      controller: titleController,
-                      decoration: const InputDecoration(
-                        hintText: 'Judul tugas',
+                      TextField(
+                        controller: titleController,
+                        decoration: const InputDecoration(
+                          hintText: 'Judul tugas',
+                        ),
+                        autofocus: true,
                       ),
-                      autofocus: true,
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    TextField(
-                      controller: descriptionController,
-                      decoration: const InputDecoration(
-                        hintText: 'Deskripsi tugas',
+                      const SizedBox(height: AppSpacing.sm),
+                      TextField(
+                        controller: descriptionController,
+                        decoration: const InputDecoration(
+                          hintText: 'Deskripsi tugas',
+                        ),
+                        maxLines: 3,
                       ),
-                      maxLines: 3,
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    _PriorityDropdown(
-                      value: selectedPriority,
-                      onChanged: (String value) {
-                        setState(() {
-                          selectedPriority = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    _DueDatePickerField(
-                      selectedDueDate: selectedDueDate,
-                      onSelectDate: () async {
-                        final DateTime? pickedDate = await _pickDueDate(
-                          context: builderContext,
-                          initialDate: selectedDueDate,
-                        );
-                        if (pickedDate == null) {
-                          return;
-                        }
-                        setState(() {
-                          selectedDueDate = pickedDate;
-                        });
-                      },
-                      onClearDate: () {
-                        setState(() {
-                          selectedDueDate = null;
-                        });
-                      },
-                    ),
+                      const SizedBox(height: AppSpacing.sm),
+                      _PriorityDropdown(
+                        value: selectedPriority,
+                        onChanged: (String value) {
+                          setState(() {
+                            selectedPriority = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      _DueDatePickerField(
+                        selectedDueDate: selectedDueDate,
+                        onSelectDate: () async {
+                          final DateTime? pickedDate = await _pickDueDate(
+                            context: builderContext,
+                            initialDate: selectedDueDate,
+                          );
+                          if (pickedDate == null) {
+                            return;
+                          }
+                          setState(() {
+                            selectedDueDate = pickedDate;
+                          });
+                        },
+                        onClearDate: () {
+                          setState(() {
+                            selectedDueDate = null;
+                          });
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -337,59 +337,59 @@ class TaskHomePage extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                    TextField(
-                      controller: titleController,
-                      decoration: const InputDecoration(
-                        hintText: 'Judul tugas',
+                      TextField(
+                        controller: titleController,
+                        decoration: const InputDecoration(
+                          hintText: 'Judul tugas',
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    TextField(
-                      controller: descriptionController,
-                      decoration: const InputDecoration(
-                        hintText: 'Deskripsi tugas',
+                      const SizedBox(height: AppSpacing.sm),
+                      TextField(
+                        controller: descriptionController,
+                        decoration: const InputDecoration(
+                          hintText: 'Deskripsi tugas',
+                        ),
+                        maxLines: 3,
                       ),
-                      maxLines: 3,
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    _StatusDropdown(
-                      value: selectedStatus,
-                      onChanged: (String value) {
-                        setState(() {
-                          selectedStatus = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    _PriorityDropdown(
-                      value: selectedPriority,
-                      onChanged: (String value) {
-                        setState(() {
-                          selectedPriority = value;
-                        });
-                      },
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    _DueDatePickerField(
-                      selectedDueDate: selectedDueDate,
-                      onSelectDate: () async {
-                        final DateTime? pickedDate = await _pickDueDate(
-                          context: builderContext,
-                          initialDate: selectedDueDate,
-                        );
-                        if (pickedDate == null) {
-                          return;
-                        }
-                        setState(() {
-                          selectedDueDate = pickedDate;
-                        });
-                      },
-                      onClearDate: () {
-                        setState(() {
-                          selectedDueDate = null;
-                        });
-                      },
-                    ),
+                      const SizedBox(height: AppSpacing.sm),
+                      _StatusDropdown(
+                        value: selectedStatus,
+                        onChanged: (String value) {
+                          setState(() {
+                            selectedStatus = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      _PriorityDropdown(
+                        value: selectedPriority,
+                        onChanged: (String value) {
+                          setState(() {
+                            selectedPriority = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      _DueDatePickerField(
+                        selectedDueDate: selectedDueDate,
+                        onSelectDate: () async {
+                          final DateTime? pickedDate = await _pickDueDate(
+                            context: builderContext,
+                            initialDate: selectedDueDate,
+                          );
+                          if (pickedDate == null) {
+                            return;
+                          }
+                          setState(() {
+                            selectedDueDate = pickedDate;
+                          });
+                        },
+                        onClearDate: () {
+                          setState(() {
+                            selectedDueDate = null;
+                          });
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -556,10 +556,7 @@ class _StatusDropdown extends StatelessWidget {
       dropdownColor: AppColors.surface,
       elevation: 0,
       decoration: const InputDecoration(hintText: 'Status'),
-      icon: const HeroIcon(
-        HeroIcons.chevronDown,
-        style: HeroIconStyle.outline,
-      ),
+      icon: const HeroIcon(HeroIcons.chevronDown, style: HeroIconStyle.outline),
       items: const <DropdownMenuItem<String>>[
         DropdownMenuItem<String>(
           value: AppStrings.todoStatus,
@@ -598,10 +595,7 @@ class _PriorityDropdown extends StatelessWidget {
       dropdownColor: AppColors.surface,
       elevation: 0,
       decoration: const InputDecoration(hintText: 'Prioritas'),
-      icon: const HeroIcon(
-        HeroIcons.chevronDown,
-        style: HeroIconStyle.outline,
-      ),
+      icon: const HeroIcon(HeroIcons.chevronDown, style: HeroIconStyle.outline),
       items: const <DropdownMenuItem<String>>[
         DropdownMenuItem<String>(
           value: AppStrings.highPriority,

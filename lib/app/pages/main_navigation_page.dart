@@ -1,3 +1,5 @@
+import 'package:autask/core/constants/app_strings.dart';
+import 'package:autask/features/ai_assistant/presentation/pages/ai_assistant_page.dart';
 import 'package:autask/features/ai_settings/presentation/pages/ai_settings_page.dart';
 import 'package:autask/features/task/presentation/pages/task_home_page.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,11 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
     return Scaffold(
       body: IndexedStack(
         index: _selectedIndex,
-        children: const <Widget>[TaskHomePage(), AiSettingsPage()],
+        children: const <Widget>[
+          TaskHomePage(),
+          AiAssistantPage(),
+          AiSettingsPage(),
+        ],
       ),
       bottomNavigationBar: SafeArea(
         minimum: const EdgeInsets.fromLTRB(16, 0, 16, 10),
@@ -44,11 +50,23 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
               Expanded(
                 child: _NavButton(
                   isActive: _selectedIndex == 1,
-                  icon: HeroIcons.cog6Tooth,
-                  label: 'Pengaturan',
+                  icon: HeroIcons.sparkles,
+                  label: AppStrings.aiAssistantNavLabel,
                   onTap: () {
                     setState(() {
                       _selectedIndex = 1;
+                    });
+                  },
+                ),
+              ),
+              Expanded(
+                child: _NavButton(
+                  isActive: _selectedIndex == 2,
+                  icon: HeroIcons.cog6Tooth,
+                  label: AppStrings.aiSettingsTitle,
+                  onTap: () {
+                    setState(() {
+                      _selectedIndex = 2;
                     });
                   },
                 ),

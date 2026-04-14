@@ -57,7 +57,9 @@ class TaskListItem extends StatelessWidget {
                         ),
                         _MetaInfoChip(
                           icon: HeroIcons.tag,
-                          value: AppStrings.priorityText(priority: task.priority),
+                          value: AppStrings.priorityText(
+                            priority: task.priority,
+                          ),
                           color: _priorityColor(priority: task.priority),
                         ),
                         _MetaInfoChip(

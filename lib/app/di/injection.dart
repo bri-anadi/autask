@@ -1,3 +1,8 @@
+import 'package:autask/features/ai_assistant/data/datasources/ai_assistant_remote_datasource.dart';
+import 'package:autask/features/ai_assistant/data/repositories/ai_assistant_repository_impl.dart';
+import 'package:autask/features/ai_assistant/domain/repositories/ai_assistant_repository.dart';
+import 'package:autask/features/ai_assistant/domain/usecases/send_prompt_usecase.dart';
+import 'package:autask/features/ai_assistant/presentation/cubit/ai_assistant_cubit.dart';
 import 'package:autask/features/ai_settings/data/datasources/ai_key_local_datasource.dart';
 import 'package:autask/features/ai_settings/data/repositories/ai_key_repository_impl.dart';
 import 'package:autask/features/ai_settings/domain/repositories/ai_key_repository.dart';
@@ -20,6 +25,7 @@ final GetIt sl = GetIt.instance;
 Future<void> configureDependencies({
   bool useInMemoryTaskDataSource = false,
   bool useInMemoryAiKeyDataSource = false,
+  AiAssistantRemoteDataSource? aiAssistantRemoteDataSource,
 }) async {
   await sl.reset();
 
@@ -46,6 +52,21 @@ Future<void> configureDependencies({
         readAiKeyUseCase: sl<ReadAiKeyUseCase>(),
         saveAiKeyUseCase: sl<SaveAiKeyUseCase>(),
         deleteAiKeyUseCase: sl<DeleteAiKeyUseCase>(),
+      ),
+    )
+    ..registerLazySingleton<AiAssistantRemoteDataSource>(
+      () => aiAssistantRemoteDataSource ?? GeminiAiAssistantRemoteDataSource(),
+    )
+    ..registerLazySingleton<AiAssistantRepository>(
+      () => AiAssistantRepositoryImpl(sl<AiAssistantRemoteDataSource>()),
+    )
+    ..registerLazySingleton<SendPromptUseCase>(
+      () => SendPromptUseCase(sl<AiAssistantRepository>()),
+    )
+    ..registerFactory<AiAssistantCubit>(
+      () => AiAssistantCubit(
+        sendPromptUseCase: sl<SendPromptUseCase>(),
+        readAiKeyUseCase: sl<ReadAiKeyUseCase>(),
       ),
     )
     ..registerLazySingleton<TaskLocalDataSource>(

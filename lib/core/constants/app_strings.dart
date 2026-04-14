@@ -20,7 +20,8 @@ class AppStrings {
   static const String cancelLabel = 'Batal';
   static const String clearDateLabel = 'Hapus Tanggal';
   static const String chooseDateLabel = 'Pilih Tanggal';
-  static const String emptyTaskMessage = 'Belum ada tugas. Tambahkan tugas pertama Anda.';
+  static const String emptyTaskMessage =
+      'Belum ada tugas. Tambahkan tugas pertama Anda.';
   static const String deleteTaskLabel = 'Hapus tugas';
   static const String editTaskLabel = 'Edit tugas';
   static const String quickStatusLabel = 'Ubah status cepat';
@@ -34,7 +35,8 @@ class AppStrings {
   static const String aiSaveKeyButton = 'Simpan API Key';
   static const String aiDeleteKeyButton = 'Hapus API Key';
   static const String aiSavedKeyTitle = 'API Key Tersimpan (Masked)';
-  static const String aiNoSavedKeyLabel = 'Belum ada API key tersimpan di perangkat.';
+  static const String aiNoSavedKeyLabel =
+      'Belum ada API key tersimpan di perangkat.';
 
   static const String aiLoadKeyError = 'Gagal memuat API key tersimpan';
   static const String aiSaveKeyError = 'Gagal menyimpan API key';
@@ -42,9 +44,24 @@ class AppStrings {
   static const String aiSaveKeySuccess = 'API key berhasil disimpan';
   static const String aiDeleteKeySuccess = 'API key berhasil dihapus';
   static const String aiValidationEmptyKey = 'API key tidak boleh kosong';
-  static const String aiValidationNoSpaces = 'API key tidak boleh mengandung spasi';
+  static const String aiValidationNoSpaces =
+      'API key tidak boleh mengandung spasi';
   static const String aiValidationMinimumLength = 'API key minimal 20 karakter';
-  static const String aiValidationPrefix = 'Format API key tidak valid (harus diawali AIza)';
+  static const String aiValidationPrefix =
+      'Format API key tidak valid (harus diawali AIza)';
+
+  static const String aiAssistantTitle = 'Asisten AI';
+  static const String aiAssistantNavLabel = 'Asisten';
+  static const String aiAssistantInputHint = 'Tulis perintah atau ide tugas...';
+  static const String aiAssistantEmptyState =
+      'Belum ada percakapan. Mulai dengan menulis prompt di bawah.';
+  static const String aiAssistantLoading =
+      'Asisten sedang menyiapkan respons...';
+  static const String aiPromptEmptyError = 'Prompt tidak boleh kosong';
+  static const String aiMissingKeyError =
+      'API key Gemini belum tersedia. Simpan dulu di Pengaturan.';
+  static const String aiGenericError =
+      'Terjadi kesalahan saat memproses permintaan AI.';
 
   static const String todoStatus = 'todo';
   static const String inProgressStatus = 'in progress';
