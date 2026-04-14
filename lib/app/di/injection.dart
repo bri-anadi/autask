@@ -1,6 +1,10 @@
 import 'package:autask/features/ai_assistant/data/datasources/ai_assistant_remote_datasource.dart';
+import 'package:autask/features/ai_assistant/data/mappers/task_draft_parser.dart';
 import 'package:autask/features/ai_assistant/data/repositories/ai_assistant_repository_impl.dart';
 import 'package:autask/features/ai_assistant/domain/repositories/ai_assistant_repository.dart';
+import 'package:autask/features/ai_assistant/domain/services/task_draft_extractor.dart';
+import 'package:autask/features/ai_assistant/domain/usecases/build_task_draft_prompt_usecase.dart';
+import 'package:autask/features/ai_assistant/domain/usecases/extract_task_draft_usecase.dart';
 import 'package:autask/features/ai_assistant/domain/usecases/send_prompt_usecase.dart';
 import 'package:autask/features/ai_assistant/presentation/cubit/ai_assistant_cubit.dart';
 import 'package:autask/features/ai_settings/data/datasources/ai_key_local_datasource.dart';
@@ -60,12 +64,21 @@ Future<void> configureDependencies({
     ..registerLazySingleton<AiAssistantRepository>(
       () => AiAssistantRepositoryImpl(sl<AiAssistantRemoteDataSource>()),
     )
+    ..registerLazySingleton<TaskDraftExtractor>(() => const TaskDraftParser())
+    ..registerLazySingleton<BuildTaskDraftPromptUseCase>(
+      () => const BuildTaskDraftPromptUseCase(),
+    )
+    ..registerLazySingleton<ExtractTaskDraftUseCase>(
+      () => ExtractTaskDraftUseCase(sl<TaskDraftExtractor>()),
+    )
     ..registerLazySingleton<SendPromptUseCase>(
       () => SendPromptUseCase(sl<AiAssistantRepository>()),
     )
     ..registerFactory<AiAssistantCubit>(
       () => AiAssistantCubit(
         sendPromptUseCase: sl<SendPromptUseCase>(),
+        buildTaskDraftPromptUseCase: sl<BuildTaskDraftPromptUseCase>(),
+        extractTaskDraftUseCase: sl<ExtractTaskDraftUseCase>(),
         readAiKeyUseCase: sl<ReadAiKeyUseCase>(),
       ),
     )

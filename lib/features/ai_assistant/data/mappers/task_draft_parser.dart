@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:autask/features/ai_assistant/domain/entities/task_draft.dart';
+import 'package:autask/features/ai_assistant/domain/services/task_draft_extractor.dart';
 
 class TaskDraftParseException implements Exception {
   const TaskDraftParseException(this.message);
@@ -8,7 +9,7 @@ class TaskDraftParseException implements Exception {
   final String message;
 }
 
-class TaskDraftParser {
+class TaskDraftParser implements TaskDraftExtractor {
   const TaskDraftParser();
 
   static const Set<String> _allowedStatus = <String>{
@@ -18,7 +19,8 @@ class TaskDraftParser {
   };
   static const Set<String> _allowedPriority = <String>{'high', 'medium', 'low'};
 
-  TaskDraft parse({required String responseText}) {
+  @override
+  TaskDraft extract({required String responseText}) {
     final String rawJson = _extractJsonObject(rawText: responseText);
     final Map<String, dynamic> json = _decodeMap(rawJson: rawJson);
 
@@ -61,6 +63,10 @@ class TaskDraftParser {
       priority: priority,
       dueDate: dueDate,
     );
+  }
+
+  TaskDraft parse({required String responseText}) {
+    return extract(responseText: responseText);
   }
 
   String _extractJsonObject({required String rawText}) {

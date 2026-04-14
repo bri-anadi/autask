@@ -57,6 +57,9 @@ class AppStrings {
       'Belum ada percakapan. Mulai dengan menulis prompt di bawah.';
   static const String aiAssistantLoading =
       'Asisten sedang menyiapkan respons...';
+  static const String aiAssistantDraftReady = 'Draft task terdeteksi';
+  static const String aiAssistantDraftFallback =
+      'Respons AI belum dapat diparse ke draft task.';
   static const String aiPromptEmptyError = 'Prompt tidak boleh kosong';
   static const String aiMissingKeyError =
       'API key Gemini belum tersedia. Simpan dulu di Pengaturan.';

@@ -1,5 +1,8 @@
 import 'package:autask/core/constants/app_strings.dart';
+import 'package:autask/features/ai_assistant/data/mappers/task_draft_parser.dart';
 import 'package:autask/features/ai_assistant/domain/repositories/ai_assistant_repository.dart';
+import 'package:autask/features/ai_assistant/domain/usecases/build_task_draft_prompt_usecase.dart';
+import 'package:autask/features/ai_assistant/domain/usecases/extract_task_draft_usecase.dart';
 import 'package:autask/features/ai_assistant/domain/usecases/send_prompt_usecase.dart';
 import 'package:autask/features/ai_assistant/presentation/cubit/ai_assistant_cubit.dart';
 import 'package:autask/features/ai_assistant/presentation/cubit/ai_assistant_state.dart';
@@ -39,11 +42,18 @@ class _FakeAiKeyRepository implements AiKeyRepository {
 
 void main() {
   blocTest<AiAssistantCubit, AiAssistantState>(
-    'emits loading then loaded with messages when prompt success',
+    'emits loading then loaded with extracted draft when prompt success',
     build: () {
       return AiAssistantCubit(
         sendPromptUseCase: SendPromptUseCase(
-          _FakeAiAssistantRepository(response: 'draft task'),
+          _FakeAiAssistantRepository(
+            response:
+                '{"title":"Belajar BLoC","description":"latihan cubit","status":"todo","priority":"medium","due_date":null}',
+          ),
+        ),
+        buildTaskDraftPromptUseCase: const BuildTaskDraftPromptUseCase(),
+        extractTaskDraftUseCase: ExtractTaskDraftUseCase(
+          const TaskDraftParser(),
         ),
         readAiKeyUseCase: ReadAiKeyUseCase(
           _FakeAiKeyRepository(savedKey: 'AIza_valid_key_1234567890'),
@@ -67,6 +77,11 @@ void main() {
             (AiAssistantState state) => state.messages.length,
             'messages length',
             2,
+          )
+          .having(
+            (AiAssistantState state) => state.latestDraft?.title,
+            'draft title',
+            'Belajar BLoC',
           ),
     ],
   );
@@ -77,6 +92,10 @@ void main() {
       return AiAssistantCubit(
         sendPromptUseCase: SendPromptUseCase(
           _FakeAiAssistantRepository(response: 'ignored'),
+        ),
+        buildTaskDraftPromptUseCase: const BuildTaskDraftPromptUseCase(),
+        extractTaskDraftUseCase: ExtractTaskDraftUseCase(
+          const TaskDraftParser(),
         ),
         readAiKeyUseCase: ReadAiKeyUseCase(
           _FakeAiKeyRepository(savedKey: null),

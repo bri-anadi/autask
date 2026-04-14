@@ -67,6 +67,19 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
                   padding: EdgeInsets.only(bottom: AppSpacing.sm),
                   child: Text(AppStrings.aiAssistantLoading),
                 ),
+              if (state.status != AiAssistantStatus.loading &&
+                  state.latestRawResponse != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.md,
+                    0,
+                    AppSpacing.md,
+                    AppSpacing.sm,
+                  ),
+                  child: _DraftExtractionIndicator(
+                    isDraftDetected: state.latestDraft != null,
+                  ),
+                ),
               Container(
                 padding: const EdgeInsets.fromLTRB(
                   AppSpacing.md,
@@ -112,6 +125,47 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class _DraftExtractionIndicator extends StatelessWidget {
+  const _DraftExtractionIndicator({required this.isDraftDetected});
+
+  final bool isDraftDetected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppSpacing.md,
+        vertical: AppSpacing.sm,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.primaryLight,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+      ),
+      child: Row(
+        children: <Widget>[
+          HeroIcon(
+            isDraftDetected
+                ? HeroIcons.checkCircle
+                : HeroIcons.exclamationCircle,
+            style: HeroIconStyle.outline,
+            size: 18,
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Expanded(
+            child: Text(
+              isDraftDetected
+                  ? AppStrings.aiAssistantDraftReady
+                  : AppStrings.aiAssistantDraftFallback,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ),
+        ],
       ),
     );
   }
