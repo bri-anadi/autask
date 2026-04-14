@@ -3,8 +3,10 @@ import 'package:autask/app/theme/app_radius.dart';
 import 'package:autask/app/theme/app_spacing.dart';
 import 'package:autask/core/constants/app_strings.dart';
 import 'package:autask/features/ai_assistant/domain/entities/ai_chat_message.dart';
+import 'package:autask/features/ai_assistant/domain/entities/task_draft.dart';
 import 'package:autask/features/ai_assistant/presentation/cubit/ai_assistant_cubit.dart';
 import 'package:autask/features/ai_assistant/presentation/cubit/ai_assistant_state.dart';
+import 'package:autask/features/task/presentation/cubit/task_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
@@ -80,6 +82,37 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
                     isDraftDetected: state.latestDraft != null,
                   ),
                 ),
+              if (state.latestDraft != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.md,
+                    0,
+                    AppSpacing.md,
+                    AppSpacing.sm,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: FilledButton.icon(
+                          onPressed: () {
+                            _openDraftConfirmationSheet(
+                              context: context,
+                              draft: state.latestDraft!,
+                            );
+                          },
+                          icon: const HeroIcon(
+                            HeroIcons.documentCheck,
+                            style: HeroIconStyle.outline,
+                            color: Colors.white,
+                          ),
+                          label: const Text(
+                            AppStrings.aiAssistantReviewDraftButton,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               Container(
                 padding: const EdgeInsets.fromLTRB(
                   AppSpacing.md,
@@ -127,6 +160,126 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
         },
       ),
     );
+  }
+
+  Future<void> _openDraftConfirmationSheet({
+    required BuildContext context,
+    required TaskDraft draft,
+  }) async {
+    final TextEditingController titleController = TextEditingController(
+      text: draft.title,
+    );
+    final TextEditingController descriptionController = TextEditingController(
+      text: draft.description,
+    );
+    String selectedPriority = draft.priority;
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.modalSurface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
+      ),
+      builder: (BuildContext sheetContext) {
+        return StatefulBuilder(
+          builder: (BuildContext builderContext, StateSetter setState) {
+            return Padding(
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.md,
+                AppSpacing.md,
+                AppSpacing.md,
+                MediaQuery.of(builderContext).viewInsets.bottom + AppSpacing.md,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(
+                    AppStrings.aiAssistantConfirmSheetTitle,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  TextField(
+                    controller: titleController,
+                    decoration: const InputDecoration(hintText: 'Judul tugas'),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  TextField(
+                    controller: descriptionController,
+                    maxLines: 3,
+                    decoration: const InputDecoration(
+                      hintText: 'Deskripsi tugas',
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  DropdownButtonFormField<String>(
+                    initialValue: selectedPriority,
+                    borderRadius: BorderRadius.circular(AppRadius.md),
+                    dropdownColor: AppColors.surface,
+                    elevation: 0,
+                    decoration: const InputDecoration(hintText: 'Prioritas'),
+                    items: const <DropdownMenuItem<String>>[
+                      DropdownMenuItem<String>(
+                        value: AppStrings.highPriority,
+                        child: Text('Tinggi'),
+                      ),
+                      DropdownMenuItem<String>(
+                        value: AppStrings.mediumPriority,
+                        child: Text('Sedang'),
+                      ),
+                      DropdownMenuItem<String>(
+                        value: AppStrings.lowPriority,
+                        child: Text('Rendah'),
+                      ),
+                    ],
+                    onChanged: (String? value) {
+                      if (value == null) {
+                        return;
+                      }
+                      setState(() {
+                        selectedPriority = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  FilledButton(
+                    onPressed: () async {
+                      await context.read<TaskCubit>().addTask(
+                        title: titleController.text,
+                        description: descriptionController.text,
+                        priority: selectedPriority,
+                        dueDate: draft.dueDate,
+                      );
+                      if (!builderContext.mounted) {
+                        return;
+                      }
+                      builderContext
+                          .read<AiAssistantCubit>()
+                          .clearLatestExtraction();
+                      Navigator.of(builderContext).pop();
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              AppStrings.aiAssistantSaveDraftSuccess,
+                            ),
+                          ),
+                        );
+                    },
+                    child: const Text(AppStrings.aiAssistantSaveDraftButton),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+
+    titleController.dispose();
+    descriptionController.dispose();
   }
 }
 

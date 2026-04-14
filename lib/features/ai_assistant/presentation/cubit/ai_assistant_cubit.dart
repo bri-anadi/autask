@@ -106,6 +106,10 @@ class AiAssistantCubit extends Cubit<AiAssistantState> {
     emit(state.copyWith(status: AiAssistantStatus.loaded, message: null));
   }
 
+  void clearLatestExtraction() {
+    emit(state.copyWith(latestDraft: null, latestRawResponse: null));
+  }
+
   TaskDraft? _tryExtractTaskDraft({required String response}) {
     try {
       return _extractTaskDraftUseCase(responseText: response);
