@@ -66,11 +66,11 @@
 
 ## Minggu 9 - Integrasi Dasar Gemini API
 
-- [ ] Gemini client dasar terpasang.
-- [ ] Request prompt dan tampil response berjalan.
-- [ ] Timeout, quota, dan network error ditangani.
-- [ ] Error message aman di UI.
-- [ ] LP7 selesai (sample request/response, error handling, screenshot chat).
+- [x] Gemini client dasar terpasang.
+- [x] Request prompt dan tampil response berjalan.
+- [x] Timeout, quota, dan network error ditangani.
+- [x] Error message aman di UI.
+- [x] LP7 selesai (sample request/response, error handling, screenshot chat).
 
 ## Minggu 10 - AI ke Draft Task
 
