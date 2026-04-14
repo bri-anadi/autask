@@ -27,6 +27,11 @@ Dokumen ini dipakai untuk sinkronisasi progres mingguan berdasarkan commit hash.
 
 Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 
+- `5a3be05` `test(ai): add cubit and widget tests for draft flow`
+- `43fe26e` `feat(task): add draft confirmation and save to task flow`
+- `16b0118` `feat(ai): add prompt template and draft extraction flow`
+- `5e5a5d9` `test(ai): add parser validation test cases`
+- `a1d21bb` `feat(ai): add task draft entity and parser`
 - `97d7182` `feat(ai): implement week 9 gemini assistant foundation`
 - `8096f3b` `feat(ui): refresh teal theme and task surfaces`
 - `a4698df` `feat(ui): add home settings navigation and search-first layout`
@@ -152,3 +157,11 @@ Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 - Perubahan utama: integrasi dasar Gemini API selesai melalui feature `ai_assistant` (domain/data/presentation), request-response prompt berjalan di UI, error handling dasar ditambahkan (timeout/network/non-2xx/missing key), dan test minimum (unit/bloc/widget) dibuat.
 - Kendala: MCP Context7 tidak tersedia pada environment saat implementasi, sehingga referensi API dicatat langsung pada report Week 9.
 - Rencana minggu berikutnya: lanjut Week 10 (output AI -> `TaskDraft` JSON, parsing validasi, konfirmasi sebelum simpan ke DB).
+
+## Minggu 10 - 2026-04-14
+
+- Commit: `a1d21bb`, `5e5a5d9`, `16b0118`, `43fe26e`, `5a3be05`
+- Pesan: `feat(ai): add task draft entity and parser`; `test(ai): add parser validation test cases`; `feat(ai): add prompt template and draft extraction flow`; `feat(task): add draft confirmation and save to task flow`; `test(ai): add cubit and widget tests for draft flow`
+- Perubahan utama: respons AI sekarang dapat diubah menjadi `TaskDraft`, divalidasi lewat parser JSON, ditinjau user melalui bottom sheet konfirmasi, lalu disimpan ke daftar task. Pengujian parser, cubit, dan widget flow end-to-end juga sudah ditambahkan.
+- Kendala: sempat ada bug provider scope pada bottom sheet save draft, dan itu sudah diperbaiki pada milestone testing.
+- Rencana minggu berikutnya: lanjut Week 11 untuk hardening fallback manual, uji CRUD + AI + DB, serta perapihan state loading/empty/error.

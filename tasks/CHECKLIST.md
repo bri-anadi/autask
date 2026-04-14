@@ -74,11 +74,11 @@
 
 ## Minggu 10 - AI ke Draft Task
 
-- [ ] Prompt untuk output JSON stabil.
-- [ ] Parsing JSON ke `TaskDraft` valid.
-- [ ] User confirmation sebelum simpan tersedia.
-- [ ] Draft valid tersimpan ke DB.
-- [ ] LP8 selesai (3 prompt, kasus gagal parse, bukti tersimpan).
+- [x] Prompt untuk output JSON stabil.
+- [x] Parsing JSON ke `TaskDraft` valid.
+- [x] User confirmation sebelum simpan tersedia.
+- [x] Draft valid tersimpan ke DB.
+- [x] LP8 selesai (3 prompt, kasus gagal parse, bukti tersimpan).
 
 ## Minggu 11 - Hardening dan Testing
 
@@ -117,6 +117,6 @@
 - [ ] Task CRUD berbasis sqflite stabil.
 - [ ] State management konsisten dengan BLoC.
 - [ ] BYOK Gemini aman di secure storage.
-- [ ] Flow AI minimum berjalan: kalimat bebas -> draft -> konfirmasi -> simpan.
+- [x] Flow AI minimum berjalan: kalimat bebas -> draft -> konfirmasi -> simpan.
 - [ ] Fallback manual saat AI gagal tersedia.
 - [ ] Presentasi final menunjukkan flow end-to-end tanpa blocker.
