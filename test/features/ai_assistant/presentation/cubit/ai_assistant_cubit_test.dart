@@ -122,4 +122,46 @@ void main() {
           ),
     ],
   );
+
+  blocTest<AiAssistantCubit, AiAssistantState>(
+    'emits loaded with null draft when response cannot be parsed',
+    build: () {
+      return AiAssistantCubit(
+        sendPromptUseCase: SendPromptUseCase(
+          _FakeAiAssistantRepository(response: 'Ini bukan JSON task draft'),
+        ),
+        buildTaskDraftPromptUseCase: const BuildTaskDraftPromptUseCase(),
+        extractTaskDraftUseCase: ExtractTaskDraftUseCase(
+          const TaskDraftParser(),
+        ),
+        readAiKeyUseCase: ReadAiKeyUseCase(
+          _FakeAiKeyRepository(savedKey: 'AIza_valid_key_1234567890'),
+        ),
+      );
+    },
+    act: (AiAssistantCubit cubit) => cubit.sendPrompt(prompt: 'buat tugas'),
+    expect: () => <dynamic>[
+      isA<AiAssistantState>().having(
+        (AiAssistantState state) => state.status,
+        'status',
+        AiAssistantStatus.loading,
+      ),
+      isA<AiAssistantState>()
+          .having(
+            (AiAssistantState state) => state.status,
+            'status',
+            AiAssistantStatus.loaded,
+          )
+          .having(
+            (AiAssistantState state) => state.latestDraft,
+            'latest draft',
+            isNull,
+          )
+          .having(
+            (AiAssistantState state) => state.latestRawResponse,
+            'latest raw response',
+            'Ini bukan JSON task draft',
+          ),
+    ],
+  );
 }

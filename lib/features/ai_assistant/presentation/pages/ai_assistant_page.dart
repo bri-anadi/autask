@@ -114,6 +114,37 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
                     ],
                   ),
                 ),
+              if (state.latestDraft == null && state.latestRawResponse != null)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(
+                    AppSpacing.md,
+                    0,
+                    AppSpacing.md,
+                    AppSpacing.sm,
+                  ),
+                  child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: OutlinedButton.icon(
+                          key: const Key('ai_assistant_manual_draft_button'),
+                          onPressed: () {
+                            _openManualTaskSheet(
+                              context: context,
+                              rawResponse: state.latestRawResponse!,
+                            );
+                          },
+                          icon: const HeroIcon(
+                            HeroIcons.pencilSquare,
+                            style: HeroIconStyle.outline,
+                          ),
+                          label: const Text(
+                            AppStrings.aiAssistantManualDraftButton,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               Container(
                 padding: const EdgeInsets.fromLTRB(
                   AppSpacing.md,
@@ -167,15 +198,50 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
     required BuildContext context,
     required TaskDraft draft,
   }) async {
+    await _openTaskSheet(
+      context: context,
+      title: AppStrings.aiAssistantConfirmSheetTitle,
+      initialTitle: draft.title,
+      initialDescription: draft.description,
+      initialPriority: draft.priority,
+      dueDate: draft.dueDate,
+      saveSuccessMessage: AppStrings.aiAssistantSaveDraftSuccess,
+    );
+  }
+
+  Future<void> _openManualTaskSheet({
+    required BuildContext context,
+    required String rawResponse,
+  }) async {
+    await _openTaskSheet(
+      context: context,
+      title: AppStrings.aiAssistantManualSheetTitle,
+      initialTitle: _suggestManualTitle(rawResponse: rawResponse),
+      initialDescription: rawResponse,
+      initialPriority: AppStrings.mediumPriority,
+      dueDate: null,
+      saveSuccessMessage: AppStrings.aiAssistantSaveManualSuccess,
+    );
+  }
+
+  Future<void> _openTaskSheet({
+    required BuildContext context,
+    required String title,
+    required String initialTitle,
+    required String initialDescription,
+    required String initialPriority,
+    required DateTime? dueDate,
+    required String saveSuccessMessage,
+  }) async {
     final TaskCubit taskCubit = context.read<TaskCubit>();
     final AiAssistantCubit aiAssistantCubit = context.read<AiAssistantCubit>();
     final TextEditingController titleController = TextEditingController(
-      text: draft.title,
+      text: initialTitle,
     );
     final TextEditingController descriptionController = TextEditingController(
-      text: draft.description,
+      text: initialDescription,
     );
-    String selectedPriority = draft.priority;
+    String selectedPriority = initialPriority;
 
     await showModalBottomSheet<void>(
       context: context,
@@ -194,85 +260,82 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
                 AppSpacing.md,
                 MediaQuery.of(builderContext).viewInsets.bottom + AppSpacing.md,
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text(
-                    AppStrings.aiAssistantConfirmSheetTitle,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  TextField(
-                    controller: titleController,
-                    decoration: const InputDecoration(hintText: 'Judul tugas'),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  TextField(
-                    controller: descriptionController,
-                    maxLines: 3,
-                    decoration: const InputDecoration(
-                      hintText: 'Deskripsi tugas',
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Text(title, style: Theme.of(context).textTheme.titleMedium),
+                    const SizedBox(height: AppSpacing.sm),
+                    TextField(
+                      key: const Key('ai_assistant_sheet_title_input'),
+                      controller: titleController,
+                      decoration: const InputDecoration(hintText: 'Judul tugas'),
                     ),
-                  ),
-                  const SizedBox(height: AppSpacing.sm),
-                  DropdownButtonFormField<String>(
-                    initialValue: selectedPriority,
-                    borderRadius: BorderRadius.circular(AppRadius.md),
-                    dropdownColor: AppColors.surface,
-                    elevation: 0,
-                    decoration: const InputDecoration(hintText: 'Prioritas'),
-                    items: const <DropdownMenuItem<String>>[
-                      DropdownMenuItem<String>(
-                        value: AppStrings.highPriority,
-                        child: Text('Tinggi'),
+                    const SizedBox(height: AppSpacing.sm),
+                    TextField(
+                      key: const Key('ai_assistant_sheet_description_input'),
+                      controller: descriptionController,
+                      maxLines: 3,
+                      decoration: const InputDecoration(
+                        hintText: 'Deskripsi tugas',
                       ),
-                      DropdownMenuItem<String>(
-                        value: AppStrings.mediumPriority,
-                        child: Text('Sedang'),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: AppStrings.lowPriority,
-                        child: Text('Rendah'),
-                      ),
-                    ],
-                    onChanged: (String? value) {
-                      if (value == null) {
-                        return;
-                      }
-                      setState(() {
-                        selectedPriority = value;
-                      });
-                    },
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  FilledButton(
-                    key: const Key('ai_assistant_save_draft_button'),
-                    onPressed: () async {
-                      await taskCubit.addTask(
-                        title: titleController.text,
-                        description: descriptionController.text,
-                        priority: selectedPriority,
-                        dueDate: draft.dueDate,
-                      );
-                      if (!builderContext.mounted) {
-                        return;
-                      }
-                      aiAssistantCubit.clearLatestExtraction();
-                      Navigator.of(builderContext).pop();
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                              AppStrings.aiAssistantSaveDraftSuccess,
-                            ),
-                          ),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    DropdownButtonFormField<String>(
+                      initialValue: selectedPriority,
+                      borderRadius: BorderRadius.circular(AppRadius.md),
+                      dropdownColor: AppColors.surface,
+                      elevation: 0,
+                      decoration: const InputDecoration(hintText: 'Prioritas'),
+                      items: const <DropdownMenuItem<String>>[
+                        DropdownMenuItem<String>(
+                          value: AppStrings.highPriority,
+                          child: Text('Tinggi'),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: AppStrings.mediumPriority,
+                          child: Text('Sedang'),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: AppStrings.lowPriority,
+                          child: Text('Rendah'),
+                        ),
+                      ],
+                      onChanged: (String? value) {
+                        if (value == null) {
+                          return;
+                        }
+                        setState(() {
+                          selectedPriority = value;
+                        });
+                      },
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    FilledButton(
+                      key: const Key('ai_assistant_save_draft_button'),
+                      onPressed: () async {
+                        await taskCubit.addTask(
+                          title: titleController.text,
+                          description: descriptionController.text,
+                          priority: selectedPriority,
+                          dueDate: dueDate,
                         );
-                    },
-                    child: const Text(AppStrings.aiAssistantSaveDraftButton),
-                  ),
-                ],
+                        if (!builderContext.mounted) {
+                          return;
+                        }
+                        aiAssistantCubit.clearLatestExtraction();
+                        Navigator.of(builderContext).pop();
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            SnackBar(content: Text(saveSuccessMessage)),
+                          );
+                      },
+                      child: const Text(AppStrings.aiAssistantSaveDraftButton),
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -282,6 +345,22 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
 
     titleController.dispose();
     descriptionController.dispose();
+  }
+
+  String _suggestManualTitle({required String rawResponse}) {
+    final String trimmed = rawResponse.trim();
+    if (trimmed.isEmpty) {
+      return '';
+    }
+
+    final String firstLine = trimmed.split('\n').first.trim();
+    final List<String> sentenceParts = firstLine.split(RegExp(r'[.!?]'));
+    final String candidate = sentenceParts.first.trim();
+    if (candidate.length <= 48) {
+      return candidate;
+    }
+
+    return '${candidate.substring(0, 48).trim()}...';
   }
 }
 

@@ -61,10 +61,14 @@ class AppStrings {
   static const String aiAssistantDraftFallback =
       'Respons AI belum dapat diparse ke draft task.';
   static const String aiAssistantReviewDraftButton = 'Tinjau Draft';
+  static const String aiAssistantManualDraftButton = 'Buat Manual';
   static const String aiAssistantConfirmSheetTitle = 'Konfirmasi Draft Task';
+  static const String aiAssistantManualSheetTitle = 'Buat Task Manual';
   static const String aiAssistantSaveDraftButton = 'Simpan ke Task';
   static const String aiAssistantSaveDraftSuccess =
       'Draft task berhasil disimpan.';
+  static const String aiAssistantSaveManualSuccess =
+      'Task manual berhasil disimpan.';
   static const String aiPromptEmptyError = 'Prompt tidak boleh kosong';
   static const String aiMissingKeyError =
       'API key Gemini belum tersedia. Simpan dulu di Pengaturan.';
