@@ -74,8 +74,9 @@ Urutan narasi yang dipakai:
 
 ## Artefak
 
-- Dokumen freeze MVP:
-  - `tasks/lp10-week-12-freeze-mvp.md`
+- Checklist dan log yang diperbarui:
+  - `tasks/CHECKLIST.md`
+  - `tasks/LOG.md`
 - Repo:
   - `https://github.com/bri-anadi/autask`
 - Jalur run lokal demo:

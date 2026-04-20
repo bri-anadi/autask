@@ -182,6 +182,6 @@ Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 
 - Commit: `0dd9c36`
 - Pesan: `docs(week12): update freeze mvp report and log`
-- Perubahan utama: scope MVP dibekukan, final QA dicatat (`flutter analyze` dan `flutter test` lulus), dokumen LP10 dibuat, report Week 12 disusun, dan known issue non-kritis dipisahkan untuk rehearsal final.
+- Perubahan utama: scope MVP dibekukan, final QA dicatat (`flutter analyze` dan `flutter test` lulus), checklist dan report Week 12 disusun, dan known issue non-kritis dipisahkan untuk rehearsal final.
 - Kendala: belum ada artifact build final yang dibundel untuk distribusi langsung.
 - Rencana minggu berikutnya: masuk Week 13 untuk presentasi batch 1 dan pencatatan feedback evaluator.
