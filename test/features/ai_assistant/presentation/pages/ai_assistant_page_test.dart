@@ -125,4 +125,86 @@ void main() {
 
     expect(find.textContaining('Tolong buat task presentasi final'), findsWidgets);
   });
+
+  testWidgets('AI assistant shows safe error message when request fails', (
+    WidgetTester tester,
+  ) async {
+    await configureDependencies(
+      useInMemoryTaskDataSource: true,
+      useInMemoryAiKeyDataSource: true,
+      aiAssistantRemoteDataSource: InMemoryAiAssistantRemoteDataSource(
+        errorMessage: 'Permintaan AI melebihi batas waktu.',
+      ),
+    );
+
+    await sl<SaveAiKeyUseCase>().call(apiKey: 'AIza_valid_key_1234567890');
+
+    await tester.pumpWidget(const AutaskApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(AppStrings.aiAssistantNavLabel));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const Key('ai_assistant_input')),
+      'Buatkan task',
+    );
+    await tester.tap(find.byKey(const Key('ai_assistant_send_button')));
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Permintaan AI melebihi batas waktu.'), findsOneWidget);
+  });
+
+  testWidgets('AI to task flow supports create update and delete scenario', (
+    WidgetTester tester,
+  ) async {
+    await configureDependencies(
+      useInMemoryTaskDataSource: true,
+      useInMemoryAiKeyDataSource: true,
+      aiAssistantRemoteDataSource: InMemoryAiAssistantRemoteDataSource(
+        responseText:
+            '{"title":"Review MVP","description":"Cek fitur inti sebelum demo","status":"todo","priority":"high","due_date":"2026-04-21"}',
+      ),
+    );
+
+    await sl<SaveAiKeyUseCase>().call(apiKey: 'AIza_valid_key_1234567890');
+
+    await tester.pumpWidget(const AutaskApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(AppStrings.aiAssistantNavLabel));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.byKey(const Key('ai_assistant_input')),
+      'Buat task review mvp',
+    );
+    await tester.tap(find.byKey(const Key('ai_assistant_send_button')));
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('ai_assistant_review_draft_button')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('ai_assistant_save_draft_button')));
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Home'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Review MVP'), findsOneWidget);
+    expect(find.text('To Do'), findsOneWidget);
+
+    await tester.tap(find.byTooltip(AppStrings.quickStatusLabel).first);
+    await tester.pumpAndSettle();
+
+    expect(find.text('In Progress'), findsOneWidget);
+
+    await tester.drag(find.text('Review MVP'), const Offset(500, 0));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Review MVP'), findsNothing);
+    expect(find.text(AppStrings.emptyTaskMessage), findsOneWidget);
+  });
 }
