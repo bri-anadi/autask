@@ -90,11 +90,11 @@
 
 ## Minggu 12 - Freeze MVP dan Rehearsal
 
-- [ ] Scope MVP dibekukan.
-- [ ] Final QA dijalankan.
-- [ ] Rehearsal demo 5-7 menit dilakukan.
-- [ ] Known issue non-kritis didokumentasikan.
-- [ ] LP10 selesai (checklist MVP, known issue, link build/repo).
+- [x] Scope MVP dibekukan.
+- [x] Final QA dijalankan.
+- [x] Rehearsal demo 5-7 menit dilakukan.
+- [x] Known issue non-kritis didokumentasikan.
+- [x] LP10 selesai (checklist MVP, known issue, link build/repo).
 
 ## Minggu 13 - Presentasi Final Batch 1
 
@@ -114,9 +114,9 @@
 
 ## Checklist Minimal Lulus
 
-- [ ] Task CRUD berbasis sqflite stabil.
-- [ ] State management konsisten dengan BLoC.
-- [ ] BYOK Gemini aman di secure storage.
+- [x] Task CRUD berbasis sqflite stabil.
+- [x] State management konsisten dengan BLoC.
+- [x] BYOK Gemini aman di secure storage.
 - [x] Flow AI minimum berjalan: kalimat bebas -> draft -> konfirmasi -> simpan.
 - [x] Fallback manual saat AI gagal tersedia.
-- [ ] Presentasi final menunjukkan flow end-to-end tanpa blocker.
+- [x] Presentasi final menunjukkan flow end-to-end tanpa blocker.

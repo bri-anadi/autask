@@ -27,6 +27,7 @@ Dokumen ini dipakai untuk sinkronisasi progres mingguan berdasarkan commit hash.
 
 Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 
+- `d2ae598` `docs(week11): update checklist report and log`
 - `67c2557` `test(ai): add hardening scenarios for ai task flow`
 - `af346ed` `feat(ai): add manual fallback flow for parse failures`
 - `5a3be05` `test(ai): add cubit and widget tests for draft flow`
@@ -175,3 +176,11 @@ Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 - Perubahan utama: flow AI diperkuat dengan fallback manual saat parsing gagal, reusable bottom sheet untuk save task, serta skenario uji yang lebih lengkap mencakup AI success, AI error, fallback manual, dan gabungan create-update-delete-empty state.
 - Kendala: sempat muncul issue lifecycle `TextEditingController` dan overflow pada bottom sheet saat test fallback manual, dan itu sudah diselesaikan dengan perbaikan UI sheet serta penyesuaian test.
 - Rencana minggu berikutnya: masuk Week 12 untuk freeze MVP, final QA, rehearsal demo, dan dokumentasi known issue non-kritis.
+
+## Minggu 12 - 2026-04-20
+
+- Commit: `worktree`
+- Pesan: `pending docs(week12): update freeze mvp report and log`
+- Perubahan utama: scope MVP dibekukan, final QA dicatat (`flutter analyze` dan `flutter test` lulus), dokumen LP10 dibuat, report Week 12 disusun, dan known issue non-kritis dipisahkan untuk rehearsal final.
+- Kendala: belum ada artifact build final yang dibundel untuk distribusi langsung.
+- Rencana minggu berikutnya: masuk Week 13 untuk presentasi batch 1 dan pencatatan feedback evaluator.
