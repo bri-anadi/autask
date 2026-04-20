@@ -15,7 +15,7 @@ abstract class AiAssistantRemoteDataSource {
 class GeminiAiAssistantRemoteDataSource implements AiAssistantRemoteDataSource {
   GeminiAiAssistantRemoteDataSource({
     HttpClient? httpClient,
-    this.model = 'gemini-1.5-flash',
+    this.model = 'gemini-3-flash-preview',
     this.timeout = const Duration(seconds: 20),
   }) : _httpClient = httpClient ?? HttpClient();
 

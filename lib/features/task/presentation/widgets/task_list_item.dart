@@ -12,12 +12,14 @@ class TaskListItem extends StatelessWidget {
     required this.task,
     required this.onQuickStatus,
     required this.onTap,
+    this.showQuickAction = true,
     super.key,
   });
 
   final Task task;
   final VoidCallback onQuickStatus;
   final VoidCallback onTap;
+  final bool showQuickAction;
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +72,15 @@ class TaskListItem extends StatelessWidget {
                       ],
                     ),
                   ),
-                  IconButton(
-                    tooltip: AppStrings.quickStatusLabel,
-                    onPressed: onQuickStatus,
-                    icon: const HeroIcon(
-                      HeroIcons.arrowPath,
-                      style: HeroIconStyle.outline,
+                  if (showQuickAction)
+                    IconButton(
+                      tooltip: AppStrings.quickStatusLabel,
+                      onPressed: onQuickStatus,
+                      icon: const HeroIcon(
+                        HeroIcons.arrowPath,
+                        style: HeroIconStyle.outline,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ],

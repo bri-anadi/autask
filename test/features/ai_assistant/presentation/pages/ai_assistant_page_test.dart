@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('AI assistant sends prompt and shows response', (
+  testWidgets('AI assistant sends prompt and shows fallback summary', (
     WidgetTester tester,
   ) async {
     await configureDependencies(
@@ -34,7 +34,8 @@ void main() {
     await tester.pump();
     await tester.pumpAndSettle();
 
-    expect(find.text('Ini draft task dari AI.'), findsOneWidget);
+    expect(find.text(AppStrings.aiAssistantFallbackMessage), findsOneWidget);
+    expect(find.text('Ini draft task dari AI.'), findsNothing);
   });
 
   testWidgets('AI draft can be reviewed and saved into task list', (
@@ -67,12 +68,17 @@ void main() {
 
     expect(find.text(AppStrings.aiAssistantDraftReady), findsOneWidget);
 
-    await tester.tap(find.byKey(const Key('ai_assistant_review_draft_button')));
-    await tester.pumpAndSettle();
+    expect(find.byKey(const Key('ai_assistant_draft_preview_card')), findsOneWidget);
+    expect(find.text('Belajar Flutter Bloc'), findsOneWidget);
+    expect(find.text(AppStrings.aiAssistantDraftParsedMessage), findsOneWidget);
+    expect(
+      find.text(
+        '{"title":"Belajar Flutter Bloc","description":"Pelajari cubit dan state","status":"todo","priority":"medium","due_date":"2026-04-20"}',
+      ),
+      findsNothing,
+    );
 
-    expect(find.text(AppStrings.aiAssistantConfirmSheetTitle), findsOneWidget);
-
-    await tester.tap(find.byKey(const Key('ai_assistant_save_draft_button')));
+    await tester.tap(find.byKey(const Key('ai_assistant_save_preview_button')));
     await tester.pump();
     await tester.pumpAndSettle();
 
@@ -184,10 +190,7 @@ void main() {
     await tester.pump();
     await tester.pumpAndSettle();
 
-    await tester.tap(find.byKey(const Key('ai_assistant_review_draft_button')));
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const Key('ai_assistant_save_draft_button')));
-    await tester.pump();
+    await tester.tap(find.byKey(const Key('ai_assistant_save_preview_button')));
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Home'));

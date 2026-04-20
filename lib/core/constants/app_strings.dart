@@ -60,7 +60,12 @@ class AppStrings {
   static const String aiAssistantDraftReady = 'Draft task terdeteksi';
   static const String aiAssistantDraftFallback =
       'Respons AI belum dapat diparse ke draft task.';
-  static const String aiAssistantReviewDraftButton = 'Tinjau Draft';
+  static const String aiAssistantDraftPreviewTitle = 'Preview task dari AI';
+  static const String aiAssistantDraftParsedMessage =
+      'Draft task berhasil dibuat. Tinjau kartu task di bawah.';
+  static const String aiAssistantFallbackMessage =
+      'Saya belum bisa membuat draft task otomatis. Gunakan mode manual untuk menyimpan task.';
+  static const String aiAssistantEditDraftButton = 'Edit Draft';
   static const String aiAssistantManualDraftButton = 'Buat Manual';
   static const String aiAssistantConfirmSheetTitle = 'Konfirmasi Draft Task';
   static const String aiAssistantManualSheetTitle = 'Buat Task Manual';

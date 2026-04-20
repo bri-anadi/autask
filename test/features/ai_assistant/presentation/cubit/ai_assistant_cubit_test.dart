@@ -82,6 +82,11 @@ void main() {
             (AiAssistantState state) => state.latestDraft?.title,
             'draft title',
             'Belajar BLoC',
+          )
+          .having(
+            (AiAssistantState state) => state.messages.last.text,
+            'assistant summary',
+            AppStrings.aiAssistantDraftParsedMessage,
           ),
     ],
   );
@@ -161,6 +166,11 @@ void main() {
             (AiAssistantState state) => state.latestRawResponse,
             'latest raw response',
             'Ini bukan JSON task draft',
+          )
+          .having(
+            (AiAssistantState state) => state.messages.last.text,
+            'assistant summary',
+            AppStrings.aiAssistantFallbackMessage,
           ),
     ],
   );

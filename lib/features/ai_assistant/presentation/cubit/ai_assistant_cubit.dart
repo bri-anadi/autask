@@ -70,7 +70,9 @@ class AiAssistantCubit extends Cubit<AiAssistantState> {
         ),
         AiChatMessage(
           role: AiChatRole.assistant,
-          text: response,
+          text: latestDraft != null
+              ? AppStrings.aiAssistantDraftParsedMessage
+              : AppStrings.aiAssistantFallbackMessage,
           createdAt: DateTime.now(),
         ),
       ];

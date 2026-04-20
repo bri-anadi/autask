@@ -6,7 +6,9 @@ import 'package:autask/features/ai_assistant/domain/entities/ai_chat_message.dar
 import 'package:autask/features/ai_assistant/domain/entities/task_draft.dart';
 import 'package:autask/features/ai_assistant/presentation/cubit/ai_assistant_cubit.dart';
 import 'package:autask/features/ai_assistant/presentation/cubit/ai_assistant_state.dart';
+import 'package:autask/features/task/domain/entities/task.dart';
 import 'package:autask/features/task/presentation/cubit/task_cubit.dart';
+import 'package:autask/features/task/presentation/widgets/task_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:heroicons/heroicons.dart';
@@ -90,28 +92,22 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
                     AppSpacing.md,
                     AppSpacing.sm,
                   ),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: FilledButton.icon(
-                          key: const Key('ai_assistant_review_draft_button'),
-                          onPressed: () {
-                            _openDraftConfirmationSheet(
-                              context: context,
-                              draft: state.latestDraft!,
-                            );
-                          },
-                          icon: const HeroIcon(
-                            HeroIcons.documentCheck,
-                            style: HeroIconStyle.outline,
-                            color: Colors.white,
-                          ),
-                          label: const Text(
-                            AppStrings.aiAssistantReviewDraftButton,
-                          ),
-                        ),
-                      ),
-                    ],
+                  child: _DraftPreviewSection(
+                    draft: state.latestDraft!,
+                    onEditDraft: () {
+                      _openDraftConfirmationSheet(
+                        context: context,
+                        draft: state.latestDraft!,
+                      );
+                    },
+                    onSaveDraft: () async {
+                      await _saveDraftToTask(
+                        context: context,
+                        draft: state.latestDraft!,
+                        saveSuccessMessage:
+                            AppStrings.aiAssistantSaveDraftSuccess,
+                      );
+                    },
                   ),
                 ),
               if (state.latestDraft == null && state.latestRawResponse != null)
@@ -207,6 +203,29 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
       dueDate: draft.dueDate,
       saveSuccessMessage: AppStrings.aiAssistantSaveDraftSuccess,
     );
+  }
+
+  Future<void> _saveDraftToTask({
+    required BuildContext context,
+    required TaskDraft draft,
+    required String saveSuccessMessage,
+  }) async {
+    final TaskCubit taskCubit = context.read<TaskCubit>();
+    final AiAssistantCubit aiAssistantCubit = context.read<AiAssistantCubit>();
+
+    await taskCubit.addTask(
+      title: draft.title,
+      description: draft.description,
+      priority: draft.priority,
+      dueDate: draft.dueDate,
+    );
+    if (!context.mounted) {
+      return;
+    }
+    aiAssistantCubit.clearLatestExtraction();
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(saveSuccessMessage)));
   }
 
   Future<void> _openManualTaskSheet({
@@ -361,6 +380,79 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
     }
 
     return '${candidate.substring(0, 48).trim()}...';
+  }
+}
+
+class _DraftPreviewSection extends StatelessWidget {
+  const _DraftPreviewSection({
+    required this.draft,
+    required this.onEditDraft,
+    required this.onSaveDraft,
+  });
+
+  final TaskDraft draft;
+  final VoidCallback onEditDraft;
+  final Future<void> Function() onSaveDraft;
+
+  @override
+  Widget build(BuildContext context) {
+    final Task previewTask = Task(
+      id: -1,
+      title: draft.title,
+      description: draft.description,
+      status: draft.status,
+      priority: draft.priority,
+      dueDate: draft.dueDate,
+    );
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Text(
+          AppStrings.aiAssistantDraftPreviewTitle,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        TaskListItem(
+          key: const Key('ai_assistant_draft_preview_card'),
+          task: previewTask,
+          onQuickStatus: () {},
+          onTap: () {},
+          showQuickAction: false,
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Row(
+          children: <Widget>[
+            Expanded(
+              child: OutlinedButton.icon(
+                key: const Key('ai_assistant_edit_draft_button'),
+                onPressed: onEditDraft,
+                icon: const HeroIcon(
+                  HeroIcons.pencilSquare,
+                  style: HeroIconStyle.outline,
+                ),
+                label: const Text(AppStrings.aiAssistantEditDraftButton),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: FilledButton.icon(
+                key: const Key('ai_assistant_save_preview_button'),
+                onPressed: () async {
+                  await onSaveDraft();
+                },
+                icon: const HeroIcon(
+                  HeroIcons.check,
+                  style: HeroIconStyle.outline,
+                  color: Colors.white,
+                ),
+                label: const Text(AppStrings.aiAssistantSaveDraftButton),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
 
