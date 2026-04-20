@@ -185,3 +185,11 @@ Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 - Perubahan utama: scope MVP dibekukan, final QA dicatat (`flutter analyze` dan `flutter test` lulus), checklist dan report Week 12 disusun, dan known issue non-kritis dipisahkan untuk rehearsal final.
 - Kendala: belum ada artifact build final yang dibundel untuk distribusi langsung.
 - Rencana minggu berikutnya: masuk Week 13 untuk presentasi batch 1 dan pencatatan feedback evaluator.
+
+## Persiapan Minggu 13 - 2026-04-20
+
+- Commit: `pending`
+- Pesan: `pending docs(week13): add presentation prep report`
+- Perubahan utama: report Week 13 disiapkan dalam status `In Progress`, lengkap dengan alur presentasi `problem -> solusi -> demo -> hasil`, template feedback evaluator, dan daftar revisi minor awal.
+- Kendala: feedback evaluator belum bisa diisi karena presentasi batch 1 belum dijalankan.
+- Rencana minggu berikutnya: isi hasil presentasi batch 1, dokumentasikan feedback aktual, lalu tandai checklist Week 13 selesai.
