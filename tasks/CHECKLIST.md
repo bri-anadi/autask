@@ -82,11 +82,11 @@
 
 ## Minggu 11 - Hardening dan Testing
 
-- [ ] Skenario uji CRUD + AI + DB dijalankan.
-- [ ] Loading/empty/error state dirapikan.
-- [ ] Fallback manual saat AI gagal dipastikan berjalan.
-- [ ] Bug prioritas ditutup.
-- [ ] LP9 selesai (test case, bug log sebelum/sesudah, stabilitas).
+- [x] Skenario uji CRUD + AI + DB dijalankan.
+- [x] Loading/empty/error state dirapikan.
+- [x] Fallback manual saat AI gagal dipastikan berjalan.
+- [x] Bug prioritas ditutup.
+- [x] LP9 selesai (test case, bug log sebelum/sesudah, stabilitas).
 
 ## Minggu 12 - Freeze MVP dan Rehearsal
 
@@ -118,5 +118,5 @@
 - [ ] State management konsisten dengan BLoC.
 - [ ] BYOK Gemini aman di secure storage.
 - [x] Flow AI minimum berjalan: kalimat bebas -> draft -> konfirmasi -> simpan.
-- [ ] Fallback manual saat AI gagal tersedia.
+- [x] Fallback manual saat AI gagal tersedia.
 - [ ] Presentasi final menunjukkan flow end-to-end tanpa blocker.

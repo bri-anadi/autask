@@ -27,6 +27,8 @@ Dokumen ini dipakai untuk sinkronisasi progres mingguan berdasarkan commit hash.
 
 Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 
+- `67c2557` `test(ai): add hardening scenarios for ai task flow`
+- `af346ed` `feat(ai): add manual fallback flow for parse failures`
 - `5a3be05` `test(ai): add cubit and widget tests for draft flow`
 - `43fe26e` `feat(task): add draft confirmation and save to task flow`
 - `16b0118` `feat(ai): add prompt template and draft extraction flow`
@@ -165,3 +167,11 @@ Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 - Perubahan utama: respons AI sekarang dapat diubah menjadi `TaskDraft`, divalidasi lewat parser JSON, ditinjau user melalui bottom sheet konfirmasi, lalu disimpan ke daftar task. Pengujian parser, cubit, dan widget flow end-to-end juga sudah ditambahkan.
 - Kendala: sempat ada bug provider scope pada bottom sheet save draft, dan itu sudah diperbaiki pada milestone testing.
 - Rencana minggu berikutnya: lanjut Week 11 untuk hardening fallback manual, uji CRUD + AI + DB, serta perapihan state loading/empty/error.
+
+## Minggu 11 - 2026-04-20
+
+- Commit: `af346ed`, `67c2557`
+- Pesan: `feat(ai): add manual fallback flow for parse failures`; `test(ai): add hardening scenarios for ai task flow`
+- Perubahan utama: flow AI diperkuat dengan fallback manual saat parsing gagal, reusable bottom sheet untuk save task, serta skenario uji yang lebih lengkap mencakup AI success, AI error, fallback manual, dan gabungan create-update-delete-empty state.
+- Kendala: sempat muncul issue lifecycle `TextEditingController` dan overflow pada bottom sheet saat test fallback manual, dan itu sudah diselesaikan dengan perbaikan UI sheet serta penyesuaian test.
+- Rencana minggu berikutnya: masuk Week 12 untuk freeze MVP, final QA, rehearsal demo, dan dokumentasi known issue non-kritis.
