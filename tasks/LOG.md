@@ -27,6 +27,7 @@ Dokumen ini dipakai untuk sinkronisasi progres mingguan berdasarkan commit hash.
 
 Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 
+- `0dd9c36` `docs(week12): update freeze mvp report and log`
 - `d2ae598` `docs(week11): update checklist report and log`
 - `67c2557` `test(ai): add hardening scenarios for ai task flow`
 - `af346ed` `feat(ai): add manual fallback flow for parse failures`
@@ -179,8 +180,8 @@ Urutan di bawah ini mengikuti output `git log --oneline` (terbaru -> terlama):
 
 ## Minggu 12 - 2026-04-20
 
-- Commit: `worktree`
-- Pesan: `pending docs(week12): update freeze mvp report and log`
+- Commit: `0dd9c36`
+- Pesan: `docs(week12): update freeze mvp report and log`
 - Perubahan utama: scope MVP dibekukan, final QA dicatat (`flutter analyze` dan `flutter test` lulus), dokumen LP10 dibuat, report Week 12 disusun, dan known issue non-kritis dipisahkan untuk rehearsal final.
 - Kendala: belum ada artifact build final yang dibundel untuk distribusi langsung.
 - Rencana minggu berikutnya: masuk Week 13 untuk presentasi batch 1 dan pencatatan feedback evaluator.
